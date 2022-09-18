@@ -1,26 +1,45 @@
-nav role="navigation" class="navbar navbar-expand-sm navbar-dark bg-primary"
-  div class="container-fluid"
-    a class="navbar-brand" rel="home" href="/" title="Securely Share Configurations"
-        img alt="Credence" src="/logo.png" style="max-width:35px; margin-top: -7px;"
-    a class="navbar-brand" href="/" Credence
-    button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation"
-      span class="navbar-toggler-icon"
+/ nav role="navigation" class="navbar navbar-expand-sm navbar-dark bg-primary"
+/   div class="container-fluid"
+/     a class="navbar-brand" rel="home" href="/" title="Securely Share Configurations"
+/         img alt="Credence" src="/logo.png" style="max-width:35px; margin-top: -7px;"
+/     a class="navbar-brand" href="/" Credence
+/     button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation"
+/       span class="navbar-toggler-icon"
 
-    div class="collapse navbar-collapse" id="mainNavbar"
-      ul class="navbar-nav me-auto"
-        - if @current_account
-          li class="nav-item"
-            a class="nav-link disabled" href="/" Projects
-          li class="nav-item dropdown"
-            a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
-              = "#{@current_account['email']}"
+/     div class="collapse navbar-collapse" id="mainNavbar"
+/       ul class="navbar-nav me-auto"
+/         - if @current_account
+/           li class="nav-item"
+/             a class="nav-link disabled" href="/" Projects
+/           li class="nav-item dropdown"
+/             a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
+/               = "#{@current_account['email']}"
 
-            div class=-"dropdown-menu"
-              a class="dropdown-item" href="/account/#{@current_account['email']}" account
-              a class="dropdown-item" href='/auth/logout' logout
-        - else
-          li class="nav-item"
-            a class="nav-link" href='/auth/login' login
-          li class="nav-item"
-            a class="nav-link disabled" href='/auth/login' register
-        
+/             div class=-"dropdown-menu"
+/               a class="dropdown-item" href="/account/#{@current_account['email']}" account
+/               a class="dropdown-item" href='/auth/logout' logout
+/         - else
+/           li class="nav-item"
+/             a class="nav-link" href='/auth/login' login
+/           li class="nav-item"
+/             a class="nav-link disabled" href='/auth/login' register
+header.site-navbar.site-navbar-target.bg-secondary.shadow role="banner" 
+  .container
+    .row.align-items-center.position-relative
+      .site-logo
+        a.text-white href="/"  Coinbase
+      nav.site-navigation.text-left.ml-auto role="navigation" 
+        ul.site-menu.main-menu.js-clone-nav.ml-auto.d-none.d-lg-block
+          li.active
+            a.nav-link href="/"  Home
+          li
+            a.nav-link href="contact.html"  Sign In
+          li
+            a.nav-link href="contact.html"  Requests
+          li
+            a.nav-link href="contact.html"  Account
+          li
+            a.nav-link href="about.html"  About Us
+      .ml-auto.toggle-button.d-inline-block.d-lg-none
+        a.site-menu-toggle.py-5.js-menu-toggle.text-white href="#" 
+          span.icon-menu.h3.text-white
