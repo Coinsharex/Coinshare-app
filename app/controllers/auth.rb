@@ -7,6 +7,7 @@ module Coinbase
   # Web controller for Coinbase App
   class App < Roda
     route('auth') do |routing|
+      routing.public
       @login_route = '/auth/login'
       routing.is 'login' do
         # GET /auth/login
@@ -53,6 +54,7 @@ module Coinbase
 
         routing.post do
           account_data = JsonRequestBody.symbolize(routing.params)
+          require 'pry'
           CreateAccount.new(App.config).call(**account_data)
 
           flash[:notice] = 'Please login with your new account information'

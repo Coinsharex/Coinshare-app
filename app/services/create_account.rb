@@ -12,7 +12,8 @@ module Coinbase
     end
 
     def call(first_name:, last_name:, email:, password:, occupation:, university:, field_of_study:, study_level:,
-             picture:, bio:)
+             picture:)
+
       message = { first_name:,
                   last_name:,
                   email:,
@@ -21,8 +22,7 @@ module Coinbase
                   university:,
                   field_of_study:,
                   study_level:,
-                  picture:,
-                  bio: }
+                  picture: }
 
       response = HTTP.post(
         "#{@config.API_URL}/accounts/",

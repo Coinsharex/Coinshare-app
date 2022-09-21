@@ -1,0 +1,88 @@
+/! Navbar
+== assets([:css, :boot])
+== assets([:js, :bootstrap])
+header.header
+  nav.navbar.navbar-expand-lg.navbar-light.py-3
+    .container
+      /! Navbar Brand
+      a.navbar-brand href="#" 
+        img alt="logo" src="https://bootstrapious.com/i/snippets/sn-registeration/logo.svg" width="150" /
+.container
+  .row.py-5.mt-4.align-items-center
+    /! For Demo Purpose
+    .col-md-5.pr-lg-5.mb-5.mb-md-0
+      img.img-fluid.mb-3.d-none.d-md-block alt="" src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" /
+      h1 Create an Account
+      p.font-italic.text-muted.mb-0 Create a minimal registeration page using Bootstrap 4 HTML form elements.
+      p.font-italic.text-muted
+        | Snippet By
+        a.text-muted href="https://bootstrapious.com" 
+          u Bootstrapious
+    /! Registeration Form
+    .col-md-7.col-lg-6.ml-auto
+      form action="#" 
+        .row
+          /! First Name
+          .input-group.col-lg-6.mb-4
+            .input-group-prepend
+              span.input-group-text.bg-white.px-4.border-md.border-right-0
+                i.fa.fa-user.text-muted
+            input#firstName.form-control.bg-white.border-left-0.border-md name="firstname" placeholder=("First Name") type="text" /
+          /! Last Name
+          .input-group.col-lg-6.mb-4
+            .input-group-prepend
+              span.input-group-text.bg-white.px-4.border-md.border-right-0
+                i.fa.fa-user.text-muted
+            input#lastName.form-control.bg-white.border-left-0.border-md name="lastname" placeholder=("Last Name") type="text" /
+          /! Email Address
+          .input-group.col-lg-12.mb-4
+            .input-group-prepend
+              span.input-group-text.bg-white.px-4.border-md.border-right-0
+                i.fa.fa-envelope.text-muted
+            input#email.form-control.bg-white.border-left-0.border-md name="email" placeholder=("Email Address") type="email" /
+          /! Job
+          .input-group.col-lg-12.mb-4
+            .input-group-prepend
+              span.input-group-text.bg-white.px-4.border-md.border-right-0
+                i.fa.fa-black-tie.text-muted
+            select#job.form-control.custom-select.bg-white.border-left-0.border-md name="jobtitle" 
+              option value=""  Choose your job
+              option value=""  Designer
+              option value=""  Developer
+              option value=""  Manager
+              option value=""  Accountant
+          /! Password
+          .input-group.col-lg-6.mb-4
+            .input-group-prepend
+              span.input-group-text.bg-white.px-4.border-md.border-right-0
+                i.fa.fa-lock.text-muted
+            input#password.form-control.bg-white.border-left-0.border-md name="password" placeholder="Password" type="password" /
+          /! Password Confirmation
+          .input-group.col-lg-6.mb-4
+            .input-group-prepend
+              span.input-group-text.bg-white.px-4.border-md.border-right-0
+                i.fa.fa-lock.text-muted
+            input#passwordConfirmation.form-control.bg-white.border-left-0.border-md name="passwordConfirmation" placeholder=("Confirm Password") type="text" /
+          /! Submit Button
+          .form-group.col-lg-12.mx-auto.mb-0
+            a.btn.btn-primary.btn-block.py-2 href="#" 
+              span.font-weight-bold Create your account
+          /! Divider Text
+          .form-group.col-lg-12.mx-auto.d-flex.align-items-center.my-4
+            .border-bottom.w-100.ml-5
+            span.px-2.small.text-muted.font-weight-bold.text-muted OR
+            .border-bottom.w-100.mr-5
+          /! Social Login
+          .form-group.col-lg-12.mx-auto
+            a.btn.btn-primary.btn-block.py-2.btn-facebook href="#" 
+              i.fa.fa-facebook-f.mr-2
+              span.font-weight-bold Continue with Facebook
+            a.btn.btn-primary.btn-block.py-2.btn-twitter href="#" 
+              i.fa.fa-twitter.mr-2
+              span.font-weight-bold Continue with Twitter
+          /! Already Registered
+          .text-center.w-100
+            p.text-muted.font-weight-bold
+              | Already Registered?
+              a.text-primary.ml-2 href="#"  Login
+
