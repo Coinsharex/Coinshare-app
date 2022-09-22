@@ -1,0 +1,83 @@
+== assets([:css, :login])
+html lang="en" 
+  head
+    title Register
+    meta charset="utf-8" /
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" /
+    link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" /
+    link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /
+    / link href="css/style.css" rel="stylesheet" /
+  body
+    section.ftco-section
+      .container
+        .row.justify-content-center
+          .col-md-6.text-center.mb-5
+            a href="/"
+              h2.heading-section Coinbase
+        .row.justify-content-center
+          .col-md-12.col-lg-10
+            .wrap.d-md-flex
+              .img style=("background-image: url(images/happy.jpg);") 
+              .login-wrap.p-4.p-md-5
+                .d-flex
+                  .w-100
+                    h3.mb-4 Create a new account
+                form.signin-form action="/account/#{registration_token}" method='post' id='register-form'
+                  .form-group.mb-3
+                    label.label for="fname"  First Name
+                    input.form-control name="first_name" value="#{new_account['first_name']}" disabled="" placeholder="First Name" required="" type="text" id="fname" /
+                  .form-group.mb-3
+                    label.label for="lname"  Last Name
+                    input.form-control name="last_name" value="#{new_account['last_name']}" disabled="" placeholder="Last Name" required="" type="text" id="lname" /
+                  .form-group.mb-3
+                    label.label for="email"  Email
+                    input.form-control name="email" value="#{new_account['email']}" disabled="" placeholder="Email" required="" type="email" id="email" /
+                  .form-group.mb-3
+                    label.label for="password"  Password
+                    input.form-control name="password" placeholder="Password" required="" type="password" id="password"/
+                  .form-group.mb-3
+                    label.label for="password_confirm_input"  Re-enter Password:
+                    input.form-control name="password_confirm" placeholder="Password" required="" type="password" id="password_confirm_input"/
+                  .form-group.mb-3
+                    label.label for="occupation" Occupation
+                    select.bg-white.border-md.form-control.custom-select name="occupation" required=""
+                       option value=""  Choose your occupation
+                       option value="student"  Student
+                       option value="developer"  Developer
+                       option value="manager"  Manager
+                       option value="accountant"  Accountant
+                  .form-group.mb-3
+                    label.label for="university" School
+                    input.form-control name="university" placeholder="School" required="" type="text" id="university" /
+                  .form-group.mb-3
+                    label.label  for="fstudy"  Field of Study
+                    input.form-control placeholder="Field of Study" name="field_of_study" required="" type="text" id="fstudy" /
+                  .form-group.mb-3
+                    label.label for="slevel"  Study Level
+                    select.bg-white.border-md.form-control.custom-select name="study_level" required="" id="slevel"
+                       option value=""  Choose your study Level
+                       option value="no_level"  No School 
+                       option value="high_school"  High School
+                       option value="certificate"  Certificate Degree
+                       option value="associate"  Associate Degree
+                       option value="bachelors"  Bachelors
+                       option value="masters"  Masters
+                       option value="phd"  PHD
+                  .form-group.mb-3
+                    label for='content' Profile Image
+                    input{
+                      type="file"
+                      id='content' 
+                      accept="image/png, image/jpeg"
+                      name="picture" 
+                    }
+                  .form-group
+                    button.form-control.btn.btn-primary.rounded.submit.px-3 type="submit"  Register
+                  p.text-center
+                  | Already a member?
+                  a data-toggle="tab" href="/auth/login"  Login
+    script src="js/jquery.min.js" 
+    script src="js/popper.js" 
+    script src="js/bootstrap.min.js" 
+    script src="js/main.js" 
+

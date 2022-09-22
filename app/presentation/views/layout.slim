@@ -1,21 +1,81 @@
 doctype html
 html
   head
-    title Credence
+    title Coinbase
     
     / Themed Bootstrap CSS (Cerulean Theme) - see bootswatch.com for more themes
     / - default Bootstrap CSS: https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css
-    link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css"
+    / link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css"
+    meta charset="utf-8" /
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" /
+    link href="https://fonts.googleapis.com/css?family=Mansalva|Roboto&display=swap" rel="stylesheet" /
+    script crossorigin="anonymous" src="https://kit.fontawesome.com/42d5adcbca.js" 
 
     / Custom CSS
-    == assets(:css)
-  body
-    / Popper & Bootstrap Javascript (Load in this order)
+    / == assets([:css, :animate])
+    / == assets([:css, :aos])
+    / == assets([:css, :boot])
+    / == assets([:css, :carousel])
+    / == assets([:css, :carousel1])
+    / == assets([:css, :date])
+    / == assets([:css, :iconmoon])
+    / == assets([:css, :jquery])
+    / == assets([:css, :default])
+  body data-offset="300" data-spy="scroll" data-target=".site-navbar-target" 
     script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
     script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"
+    #home-section.site-wrap
+      .site-mobile-menu.site-navbar-target
+        .site-mobile-menu-header
+          .site-mobile-menu-close.mt-3
+            span.icon-close2.js-menu-toggle
+        .site-mobile-menu-body
+      
+      == yield
+      == assets([:js, :animate])
+      == assets([:js, :aos])
+      == assets([:js, :bootstrap])
+      == assets([:js, :easing])
+      == assets([:js, :fancy])
+      == assets([:js, :jquery])
+      == assets([:js, :main])
+      == assets([:js, :owl])
+      == assets([:js, :popper])
+      == assets([:js, :sticky])
+      == assets([:js, :waypoints])
+    footer.site-footer.bg-white
+      .container
+        .row
+          .col-md-6
+            .row
+              .col-md-7
+                h2.footer-heading.mb-4 About Us
+                p
+                  | Web Application to help other ovecome unexpected issues in their lives.
+                  | All donations funds will be directly transferred to receiver's account and we will not charge any fees
+                  | for that.
+              .col-md-4.ml-auto
+                h2.footer-heading.mb-4 Features
+                ul.list-unstyled
+                  li
+                    a href="#"  About Us
+                  li
+                    a href="#"  Contact Us
+          .col-md-4.ml-auto
+            .mb-5
+              h2.footer-heading.mb-4 Subscribe to Newsletter
+              form.footer-suscribe-form action="#" method="post" 
+                .input-group.mb-3
+                  input.form-control.rounded-0.border-secondary.text-white.bg-transparent aria-describedby="button-addon2" aria-label=("Enter Email") placeholder=("Enter Email") type="text" /
+                  .input-group-append
+                    button#button-addon2.btn.btn-primary.text-white type="button"  Subscribe
+            h2.footer-heading.mb-4 Follow Us
+            a.smoothscroll.pl-0.pr-3 href="#about-section" 
+              span.fa.fa-facebook-square
+            a.pl-3.pr-3 href="#" 
+              span.fa.fa-twitter
+            a.pl-3.pr-3 href="#" 
+              span.fa.fa-instagram
+            a.pl-3.pr-3 href="#" 
+              span.fa.fa-linkedin
 
-    == render :nav
-    div class='container' id='html_body'
-      section
-        == render :flash_bar
-        == yield
