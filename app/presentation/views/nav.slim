@@ -7,22 +7,22 @@ header.site-navbar.site-navbar-target.bg-secondary.shadow role="banner"
         a.text-white href="/"  Coinbase
       nav.site-navigation.text-left.ml-auto role="navigation" 
         ul.site-menu.main-menu.js-clone-nav.ml-auto.d-none.d-lg-block
-          - if @current_account
+          - if @current_account.logged_in?
             li
-              a.nav-link href="contact.html"  Requests
+              a.nav-link href="/requests/"  Requests
             li
               a.nav-link href="about.html"  About Us
             li
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
-                = "#{@current_account['email']}"
+                = "#{@current_account.email}"
               .dropdown-menu
-                a.dropdown-item href="/account/#{@current_account['email']}" Account
+                a.dropdown-item href="/account/#{@current_account.email}" Account
                 a.dropdown-item href='/auth/logout' Logout
            
           - else
             li
-              a.nav-link href="contact.html"  Requests
+              a.nav-link href="/requests/"  Requests
             li 
               a.nav-link href='/auth/login' Login
             li 

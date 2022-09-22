@@ -1,0 +1,39 @@
+== render :flash_bar
+== render :nav
+== assets([:css, :animate])
+== assets([:css, :aos])
+== assets([:css, :boot])
+== assets([:css, :carousel])
+== assets([:css, :carousel1])
+== assets([:css, :date])
+== assets([:css, :iconmoon])
+== assets([:css, :jquery])
+== assets([:css, :default])
+
+.container
+  .feature-29192-wrap.d-md-flex style=("margin-top: -20px; position: relative; z-index: 2;") 
+    .row.mt-5 style="vertical-align: bottom;"
+      div class="col-xs-9"
+        h3 All Requests
+      div class="col-xs-3"
+    table class="table mt-5"
+      thead
+        tr
+          th Title 
+          th Description
+          th Location
+          th Category
+          th Amount
+      tbody
+        - requests.all.each do |req|
+          tr
+            td 
+              | #{req.title}
+              td 
+                | #{req.description}
+                td
+                  | #{req.location}
+                  td 
+                    | #{req.category}
+                    td 
+                      | $#{req.amount}

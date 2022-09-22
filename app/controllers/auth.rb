@@ -17,13 +17,19 @@ module Coinbase
 
         # POST /auth/login
         routing.post do
-          account = AuthenticateAccount.new(App.config).call(
+          account_info = AuthenticateAccount.new(App.config).call(
             email: routing.params['email'],
             password: routing.params['password']
           )
 
-          SecureSession.new(session).set(:current_account, account)
-          flash[:notice] = "Welcome back #{account['email']}!"
+          current_account = Account.new(
+            account_info[:account],
+            account_info[:auth_token]
+          )
+
+          CurrentSession.new(session).current_account = current_account
+
+          flash[:notice] = "Welcome back #{current_account.email}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError
           flash.now[:error] = 'Email and password did not match our records'
@@ -40,30 +46,44 @@ module Coinbase
       @logout_route = '/auth/logout'
       routing.on 'logout' do
         routing.get do
-          SecureSession.new(session).delete(:current_account)
+          CurrentSession.new(session).delete
           flash[:notice] = "You've been logged out"
           routing.redirect @login_route
         end
       end
 
       @register_route = '/auth/register'
-      routing.is 'register' do
-        routing.get do
-          view :register
+      routing.on 'register' do
+        routing.public
+        routing.is do
+          # GET /auth/register
+          routing.get do
+            view :register
+          end
+
+          routing.post do
+            account_data = JsonRequestBody.symbolize(routing.params)
+            VerifyRegistration.new(App.config).call(account_data)
+
+            flash[:notice] = 'Please check your email for a verification link'
+            routing.redirect '/'
+          rescue VerifyRegistration::ApiServerError => e
+            App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
+            flash[:error] = 'Our servers are not responding -- please try later'
+            routing.redirect @register_route
+          rescue StandardError => e
+            App.logger.error "Could not verify registration: #{e.inspect}"
+            flash[:error] = 'Registration details are not valid'
+            routing.redirect @register_route
+          end
         end
 
-        routing.post do
-          account_data = JsonRequestBody.symbolize(routing.params)
-          require 'pry'
-          CreateAccount.new(App.config).call(**account_data)
-
-          flash[:notice] = 'Please login with your new account information'
-          routing.redirect @login_route
-        rescue StandardError => e
-          App.logger.error "ERROR CREATING ACCOUNT: #{e.inspect}"
-          App.logger.error e.backtrace
-          flash[:error] = 'Could not create account'
-          routing.redirect @register_route
+        routing.get(String) do |registration_token|
+          flash.now[:notice] = 'Email Verified! Please fill in the remaining fields'
+          new_account = SecureMessage.decrypt(registration_token)
+          view :register_confirm,
+               locals: { new_account:,
+                         registration_token: }
         end
       end
     end
