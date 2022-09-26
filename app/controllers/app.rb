@@ -10,7 +10,7 @@ module Coinbase
     plugin :public, root: 'app/presentation/public'
     plugin :multi_route
     plugin :flash
-    # plugin :assets, path: 'app/presentation/assets',
+    plugin :assets, path: 'app/presentation/assets', css: 'style.css'
     #                 css: { animate: 'animate.min.css',
     #                        aos: 'aos.css',
     #                        boot: 'bootstrap.min.css',
