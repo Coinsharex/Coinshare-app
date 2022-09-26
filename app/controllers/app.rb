@@ -43,7 +43,7 @@ module Coinbase
 
       # GET /
       routing.root do
-        # view 'home', locals: { current_account: @current_account }
+        view 'home', locals: { current_account: @current_account }
       end
     end
   end
