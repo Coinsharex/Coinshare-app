@@ -5,6 +5,7 @@ require 'roda'
 module Coinbase
   # Web controller for Coinbase API
   class App < Roda
+    plugin :flash
     route('requests') do |routing|
       routing.on do
         # GET /requests/

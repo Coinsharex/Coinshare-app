@@ -6,6 +6,7 @@ require_relative './app'
 module Coinbase
   # Web controller for Coinbase App
   class App < Roda
+    plugin :flash
     route('auth') do |routing|
       routing.public
       @login_route = '/auth/login'
