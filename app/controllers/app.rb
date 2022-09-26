@@ -9,7 +9,6 @@ module Coinbase
     plugin :render, engine: 'slim', views: 'app/presentation/views'
     plugin :public, root: 'app/presentation/public'
     plugin :multi_route
-    plugin :flash
     plugin :assets, path: 'app/presentation/assets',
                     css: { animate: 'animate.min.css',
                            aos: 'aos.css',
@@ -32,6 +31,7 @@ module Coinbase
                           popper: 'popper.min.js',
                           sticky: 'jquery.sticky.js',
                           waypoints: 'jquery.waypoints.min.js' }
+    plugin :flash
 
     route do |routing|
       response['Content-Type'] = 'text/html; charset=utf-8'
