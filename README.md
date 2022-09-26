@@ -1,6 +1,6 @@
 # Coinshare App
 
-Web Application for Coinshare system that allows users to loan others funds based on their help requests.
+Web Application for Coinshare system that allows users to donate others funds based on their help requests.
 
 Please also note the Web API that it uses: https://github.com/Coinsharex/Coinshare
 
