@@ -8,6 +8,17 @@ html
     script crossorigin="anonymous" src="https://kit.fontawesome.com/42d5adcbca.js" 
     
   body data-offset="300" data-spy="scroll" data-target=".site-navbar-target" 
+    == assets([:js, :animate])
+    == assets([:js, :aos])
+    == assets([:js, :bootstrap])
+    == assets([:js, :easing])
+    == assets([:js, :fancy])
+    == assets([:js, :jquery])
+    == assets([:js, :main])
+    == assets([:js, :owl])
+    == assets([:js, :popper])
+    == assets([:js, :sticky])
+    == assets([:js, :waypoints])
     script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
     script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"
     #home-section.site-wrap
@@ -18,17 +29,17 @@ html
         .site-mobile-menu-body
       
       == yield
-      == assets([:js, :animate])
-      == assets([:js, :aos])
-      == assets([:js, :bootstrap])
-      == assets([:js, :easing])
-      == assets([:js, :fancy])
-      == assets([:js, :jquery])
-      == assets([:js, :main])
-      == assets([:js, :owl])
-      == assets([:js, :popper])
-      == assets([:js, :sticky])
-      == assets([:js, :waypoints])
+      / == assets([:js, :animate])
+      / == assets([:js, :aos])
+      / == assets([:js, :bootstrap])
+      / == assets([:js, :easing])
+      / == assets([:js, :fancy])
+      / == assets([:js, :jquery])
+      / == assets([:js, :main])
+      / == assets([:js, :owl])
+      / == assets([:js, :popper])
+      / == assets([:js, :sticky])
+      / == assets([:js, :waypoints])
     footer.site-footer.bg-white
       .container
         .row
