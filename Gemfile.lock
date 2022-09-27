@@ -113,7 +113,7 @@ DEPENDENCIES
   minitest
   minitest-rg
   pry
-  puma (~> 5)
+  puma (~> 5.3.1)
   rack-ssl-enforcer
   rack-test
   rake
