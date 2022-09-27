@@ -6,7 +6,6 @@ require 'slim'
 module Coinbase
   # Base class for Coinbase Web Application
   class App < Roda
-    plugin :flash
     plugin :render, engine: 'slim', views: 'app/presentation/views'
     plugin :assets, path: 'app/presentation/assets',
                     css: { animate: 'animate.min.css',
