@@ -1,0 +1,5 @@
+en:
+  errors:
+    first_name: must be at least two English letters and numbers, with dots allowed in-between
+    last_name: must be at least two English letters and numbers, with dots allowed in-between
+    email: must be a valid email address

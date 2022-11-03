@@ -18,19 +18,24 @@ module Coinbase
 
         # POST /auth/login
         routing.post do
-          account_info = AuthenticateAccount.new(App.config).call(
-            email: routing.params['email'],
-            password: routing.params['password']
-          )
+          credentials = Form::LoginCredentials.new.call(routing.params)
+
+          if credentials.failure?
+            flash[:error] = 'Please enter both email and password'
+            routing.redirect @login_route
+          end
+
+          authenticated = AuthenticateAccount.new(App.config)
+                                             .call(**credentials.values)
 
           current_account = Account.new(
-            account_info[:account],
-            account_info[:auth_token]
+            authenticated[:account],
+            authenticated[:auth_token]
           )
 
           CurrentSession.new(session).current_account = current_account
 
-          flash[:notice] = "Welcome back #{current_account.email}!"
+          flash[:notice] = "Welcome back #{current_account.first_name} #{current_account.last_name}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError
           flash.now[:error] = 'Email and password did not match our records'
@@ -63,8 +68,14 @@ module Coinbase
           end
 
           routing.post do
-            account_data = JsonRequestBody.symbolize(routing.params)
-            VerifyRegistration.new(App.config).call(account_data)
+            registration = Form::Registration.new.call(routing.params)
+
+            if registration.failure?
+              flash[:error] = Form.validation_errors(registration)
+              routing.redirect @register_route
+            end
+
+            VerifyRegistration.new(App.config).call(registration)
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
@@ -79,6 +90,7 @@ module Coinbase
           end
         end
 
+        # GET /auth/register/<token>
         routing.get(String) do |registration_token|
           flash.now[:notice] = 'Email Verified! Please fill in the remaining fields'
           new_account = SecureMessage.decrypt(registration_token)

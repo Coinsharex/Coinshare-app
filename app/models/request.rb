@@ -3,17 +3,43 @@
 module Coinbase
   # Information regarding a single request
   class Request
-    attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active
+    attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active, # basic info
+                :requestor, :donations # full_details
 
     def initialize(req_info)
-      @id = req_info['attributes']['id']
-      @title = req_info['attributes']['title']
-      @description = req_info['attributes']['description']
-      @location = req_info['attributes']['location']
-      @category = req_info['attributes']['category']
-      @amount = req_info['attributes']['amount']
-      @picture = req_info['attributes']['picture']
-      @active = req_info['attributes']['active']
+      process_attributes(req_info['attributes'])
+      process_relationships(req_info['relationships'])
+      process_policies(req_info['policies'])
+    end
+
+    private
+
+    def process_attributes(attributes)
+      @id = attributes['id']
+      @title = attributes['title']
+      @description = attributes['description']
+      @location = attributes['location']
+      @category = attributes['category']
+      @amount = attributes['amount']
+      @picture = attributes['picture']
+      @active = attributes['active']
+    end
+
+    def process_relationships(relationships)
+      return unless relationships
+
+      @requestor = Account.new(relationships['requestor'])
+      @donations = process_donations(relationships['donations'])
+    end
+
+    def process_policies(policies)
+      @policies = OpenStruct.new(policies)
+    end
+
+    def process_donations(donations_info)
+      return nil unless donations_info
+
+      donations_info.map { |donation_info| Donation.new(donation_info) }
     end
   end
 end
