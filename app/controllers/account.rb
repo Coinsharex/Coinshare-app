@@ -20,21 +20,32 @@ module Coinbase
 
         # POST /account/<registration_token>
         routing.post String do |registration_token|
-          raise 'Passwords do not match or empty' if
-            routing.params['password'].empty? ||
-            routing.params['password'] != routing.params['password_confirm']
+          passwords = Form::Passwords.new.call(routing.params['password'],
+                                               routing.params['password_confirm'])
+
+          raise Form.message_values(passwords) if passwords.failure?
+
+          form_data = Form::RegistrationConfirm.new.call(
+            routing.params['occupation'],
+            routing.params['university'],
+            routing.params['field_of_study'],
+            routing.params['study_level'],
+            routing.params['picture']
+          )
+
+          raise Form.message_values(form_data) if form_data.failure?
 
           new_account = SecureMessage.decrypt(registration_token)
           CreateAccount.new(App.config).call(
             first_name: new_account['first_name'],
             last_name: new_account['last_name'],
             email: new_account['email'],
-            password: routing.params['password'],
-            occupation: routing.params['occupation'],
-            university: routing.params['university'],
-            field_of_study: routing.params['field_of_study'],
-            study_level: routing.params['study_level'],
-            picture: routing.params['picture']
+            password: passwords['password'],
+            occupation: form_data['occupation'],
+            university: form_data['university'],
+            field_of_study: form_data['field_of_study'],
+            study_level: form_data['study_level'],
+            picture: form_data['picture']
           )
 
           flash[:notice] = 'Account created! Please login'
