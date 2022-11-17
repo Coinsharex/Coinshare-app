@@ -6,6 +6,7 @@ module Coinbase
     attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active, # basic info
                 :requestor, :donations # full_details
 
+    # :summary
     def initialize(req_info)
       process_attributes(req_info['attributes'])
       process_relationships(req_info['relationships'])
@@ -29,6 +30,7 @@ module Coinbase
       return unless relationships
 
       @requestor = Account.new(relationships['requestor'])
+      # @summary = Summary.new(relationships['summary'])
       @donations = process_donations(relationships['donations'])
     end
 

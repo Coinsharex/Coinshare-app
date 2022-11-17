@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'form_base'
+require 'dry-types'
 
 module Coinbase
   # Checks for any empty spaces in
   module Types
-    include Dry::Types.module
+    include Dry::Types()
 
     Name = Types::String.constructor do |str|
       str ? str.strip.chomp : str
@@ -26,8 +27,8 @@ module Coinbase
       config.messages.load_paths << File.join(__dir__, 'errors/account_details.yml')
 
       params do
-        required(:first_name, Types::Name).filled(format?: NAME_REGEX, min_size?: 2)
-        required(:last_name, Types::Name).filled(format?: NAME_REGEX, min_size?: 2)
+        required(:first_name).filled(format?: NAME_REGEX, min_size?: 2)
+        required(:last_name).filled(format?: NAME_REGEX, min_size?: 2)
         required(:email).filled(format?: EMAIL_REGEX)
       end
     end
@@ -35,11 +36,11 @@ module Coinbase
     # Checks for registration confirmation fields
     class RegistrationConfirm < Dry::Validation::Contract
       params do
-        required[:occupation, Types::Name].filled
-        required[:university, Types::Name].filled
-        required[:field_of_study, Types::Name].filled
-        required[:study_level, Types::Name].filled
-        optional[:picture].filled
+        required(:occupation).filled
+        required(:university).filled
+        required(:field_of_study).filled
+        required(:study_level).filled
+        optional(:picture).filled
       end
 
       rule(:occupation) do
