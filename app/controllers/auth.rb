@@ -7,13 +7,26 @@ module Coinbase
   # Web controller for Coinbase App
   class App < Roda
     plugin :flash
+
+    def google_link
+      url = App.config.GOOGLE_OAUTH_URL
+      oauth_params = ["client_id=#{App.config.GOOGLE_CLIENT_ID}",
+                      "redirect_uri=#{App.config.REDIRECT_URI}",
+                      "scope=#{App.config.SCOPE}",
+                      'response_type=code'].join('&')
+      "#{url}?#{oauth_params}"
+    end
+
     route('auth') do |routing|
       routing.public
+      @oauth_callback = '/auth/oauth2callback'
       @login_route = '/auth/login'
       routing.is 'login' do
         # GET /auth/login
         routing.get do
-          view :login
+          view :login, locals: {
+            google_link:
+          }
         end
 
         # POST /auth/login
@@ -43,6 +56,33 @@ module Coinbase
         rescue AuthenticateAccount::ApiServerError => e
           App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Our servers are not responding -- please try later'
+          response.status = 500
+          routing.redirect @login_route
+        end
+      end
+
+      routing.is 'oauth2callback' do
+        # GET /auth/oauth2callback
+        routing.get do
+          authorized = AuthorizeGoogleAccount
+                       .new(App.config)
+                       .call(routing.params['code'])
+
+          current_account = Account.new(
+            authorized[:account],
+            authorized[:auth_token]
+          )
+          CurrentSession.new(session).current_account = current_account
+
+          flash[:notice] = "Welcome #{current_account.first_name}!"
+          routing.redirect '/requests'
+        rescue AuthorizeGoogleAccount::UnauthorizedError
+          flash[:error] = 'Could not login with Google'
+          response.status = 403
+          routing.redirect @login_route
+        rescue StandardError => e
+          puts "SSO LOGIN ERROR: #{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Unexpected API Error'
           response.status = 500
           routing.redirect @login_route
         end
