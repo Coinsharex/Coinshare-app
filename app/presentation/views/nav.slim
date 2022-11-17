@@ -4,15 +4,16 @@ header.site-navbar.site-navbar-target.bg-secondary.shadow role="banner"
   .container
     .row.align-items-center.position-relative
       .site-logo
-        a.text-white href="/"  Coinshare
+        a.text-white href="/"  Fundus
       nav.site-navigation.text-left.ml-auto role="navigation" 
         ul.site-menu.main-menu.js-clone-nav.ml-auto.d-none.d-lg-block
           - if @current_account.logged_in?
             li
+              a.nav-link href="/requests/new" New Request
+            li
               a.nav-link href="/requests/"  Requests
             li
-              a.nav-link href="about.html"  About Us
-            li
+              a.nav-link href="#"  About Us
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
                 = "#{@current_account.email}"

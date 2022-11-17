@@ -34,7 +34,6 @@ module Coinbase
           )
 
           CurrentSession.new(session).current_account = current_account
-
           flash[:notice] = "Welcome back #{current_account.first_name} #{current_account.last_name}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError

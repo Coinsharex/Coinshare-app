@@ -9,31 +9,42 @@
 == assets([:css, :iconmoon])
 == assets([:css, :jquery])
 == assets([:css, :default])
+== assets([:css, :div])
 
 .container
-  .feature-29192-wrap.d-md-flex style=("margin-top: -20px; position: relative; z-index: 2;") 
-    .row.mt-5 style="vertical-align: bottom;"
-      div class="col-xs-9"
-        h3 All Requests
-      div class="col-xs-3"
-    table class="table mt-5"
-      thead
-        tr
-          th Title 
-          th Description
-          th Location
-          th Category
-          th Amount
-      tbody
-        - requests.all.each do |req|
-          tr
-            td 
-              | #{req.title}
-              td 
-                | #{req.description}
-                td
-                  | #{req.location}
-                  td 
-                    | #{req.category}
-                    td 
-                      | $#{req.amount}
+  .row.mb-5.align-items-st
+    .col-md-9
+      .heading-20219
+        h2.mt-3.title.text-cursive All Requests
+  .row
+    - requests.all.each do |req|
+      .col-md-4
+        .cause.shadow-sm
+          a.cause-link.d-block href="/requests/#{req.id}" 
+            img.img-fluid alt="Image" src="data:image/jpeg;base64,#{req.picture}" /
+            .custom-progress-wrap
+              span.caption 80% complete
+              .custom-progress-inner
+                - if req.category == 'health'
+                  .custom-progress.bg-primary style=("width: 80%;") 
+                - if req.category == 'school'
+                  .custom-progress.bg-danger style=("width: 80%;") 
+                - if req.category == 'livelihood'
+                  .custom-progress.bg-warning style=("width: 80%;") 
+          .px-3.pt-3.border-top-0.border.border.shadow-sm
+            - if req.category == 'health'
+              span.badge-primary.py-1.small.px-2.rounded.mb-3.d-inline-block Health
+            - if req.category == 'school'
+              span.badge-danger.py-1.small.px-2.rounded.mb-3.d-inline-block School
+            - if req.category == 'livelihood'
+              span.badge-warning.py-1.small.px-2.rounded.mb-3.d-inline-block Livelihood
+            h6.mb-4 #{req.location}
+            h5.mb-4
+              a style="color:black;" href="/requests/#{req.id}"   #{req.title.slice(0,25)...}
+            p.mb-4
+              a style="color:black;" href="/requests/#{req.id}"   #{req.description.slice(0,200)...}
+            .border-top.border-light.border-bottom.py-2.d-flex
+              div Amount asked
+              .ml-auto
+                strong.text-primary $#{req.amount}
+/src="#{req.picture}"

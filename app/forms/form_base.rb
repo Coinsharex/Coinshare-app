@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dry-validation'
+
 module Coinbase
   # Form Helpers
   module Form

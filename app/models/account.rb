@@ -3,7 +3,7 @@
 module Coinbase
   # Behaviors of the currently logged in account
   class Account
-    def initialize(account_info, auth_token)
+    def initialize(account_info, auth_token = nil)
       @account_info = account_info
       @auth_token = auth_token
     end
@@ -11,15 +11,15 @@ module Coinbase
     attr_reader :account_info, :auth_token
 
     def first_name
-      @account_info ? @account_info['first_name'] : nil
+      @account_info ? @account_info['attributes']['first_name'] : nil
     end
 
     def last_name
-      @account_info ? @account_info['last_name'] : nil
+      @account_info ? @account_info['attributes']['last_name'] : nil
     end
 
     def email
-      @account_info ? @account_info['email'] : nil
+      @account_info ? @account_info['attributes']['email'] : nil
     end
 
     def occupation
