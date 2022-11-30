@@ -38,8 +38,7 @@ module Coinbase
             routing.redirect @login_route
           end
 
-          authenticated = AuthenticateAccount.new(App.config)
-                                             .call(**credentials.values)
+          authenticated = AuthenticateAccount.new.call(**credentials.values)
 
           current_account = Account.new(
             authenticated[:account],
@@ -49,10 +48,10 @@ module Coinbase
           CurrentSession.new(session).current_account = current_account
           flash[:notice] = "Welcome back #{current_account.first_name} #{current_account.last_name}!"
           routing.redirect '/'
-        rescue AuthenticateAccount::UnauthorizedError
+        rescue AuthenticateAccount::NotAuthenticatedError
           flash.now[:error] = 'Email and password did not match our records'
-          response.status = 400
-          view :login
+          response.status = 401
+          routing.redirect @login_route
         rescue AuthenticateAccount::ApiServerError => e
           App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Our servers are not responding -- please try later'
