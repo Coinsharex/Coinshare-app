@@ -4,7 +4,7 @@ module Coinbase
   # Information regarding a single request
   class Request
     attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active, # basic info
-                :requestor, :donations # full_details
+                :requestor, :donations, :policies # full_details
 
     # :summary
     def initialize(req_info)
