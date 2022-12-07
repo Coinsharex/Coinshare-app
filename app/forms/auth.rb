@@ -1,18 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'form_base'
-require 'dry-types'
 
 module Coinbase
-  # Checks for any empty spaces in
-  module Types
-    include Dry::Types()
-
-    Name = Types::String.constructor do |str|
-      str ? str.strip.chomp : str
-    end
-  end
-
   module Form
     # Checks for login fields
     class LoginCredentials < Dry::Validation::Contract
@@ -40,7 +30,7 @@ module Coinbase
         required(:university).filled
         required(:field_of_study).filled
         required(:study_level).filled
-        optional(:picture).filled
+        required(:picture).filled
       end
 
       rule(:occupation) do
