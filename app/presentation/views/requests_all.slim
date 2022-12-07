@@ -21,7 +21,10 @@
       .col-md-4
         .cause.shadow-sm
           a.cause-link.d-block href="/requests/#{req.id}" 
-            img.img-fluid alt="Image" src="data:image/jpeg;base64,#{req.picture}" /
+            - if req.picture == 'haha'
+               img.img-fluid alt="Image" src="images/hero_4.jpg" /
+            - if req.picture != 'haha'
+               img.img-fluid alt="Image" src="data:image/jpeg;base64,#{req.picture}" /
             .custom-progress-wrap
               span.caption 80% complete
               .custom-progress-inner

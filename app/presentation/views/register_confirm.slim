@@ -13,7 +13,7 @@ html lang="en"
         .row.justify-content-center
           .col-md-6.text-center.mb-5
             a href="/"
-              h2.heading-section Coinshare
+              h2.heading-section Fundus
         .row.justify-content-center
           .col-md-12.col-lg-10
             .wrap.d-md-flex
@@ -22,7 +22,7 @@ html lang="en"
                 .d-flex
                   .w-100
                     h3.mb-4 Create a new account
-                form.signin-form action="/account/#{registration_token}" method='post' id='register-form'
+                form.signin-form action="/account/#{registration_token}" method='post' id='register-form' enctype="multipart/form-data"
                   .form-group.mb-3
                     label.label for="fname"  First Name
                     input.form-control name="first_name" value="#{new_account['first_name']}" disabled="" placeholder="First Name" required="" type="text" id="fname" /
@@ -71,6 +71,7 @@ html lang="en"
                       id='content' 
                       accept="image/png, image/jpeg"
                       name="picture" 
+                      required
                     }
                   .form-group
                     button.form-control.btn.btn-primary.rounded.submit.px-3 type="submit"  Register

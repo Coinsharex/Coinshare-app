@@ -20,17 +20,12 @@ module Coinbase
 
         # POST /account/<registration_token>
         routing.post String do |registration_token|
-          passwords = Form::Passwords.new.call(routing.params['password'],
-                                               routing.params['password_confirm'])
+          passwords = Form::Passwords.new.call(routing.params)
 
           raise Form.message_values(passwords) if passwords.failure?
 
           form_data = Form::RegistrationConfirm.new.call(
-            routing.params['occupation'],
-            routing.params['university'],
-            routing.params['field_of_study'],
-            routing.params['study_level'],
-            routing.params['picture']
+            routing.params
           )
 
           raise Form.message_values(form_data) if form_data.failure?
