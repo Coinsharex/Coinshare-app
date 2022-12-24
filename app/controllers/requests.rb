@@ -111,9 +111,19 @@ module Coinbase
           )
 
           flash[:notice] = 'New Request successfully added'
+        rescue CreateNewRequest::MonthlyRequestAllowanceError
+          flash[:error] = 'You already posted 2 requests this month'
+          response.status = 401
+        rescue CreateNewRequest::YearlyFundsAllownaceError
+          flash[:error] = 'You have asked more than the allowed threshold for the year'
+          response.status = 403
+        rescue AuthenticateAccount::ApiServerError => e
+          App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Our servers are not responding -- please try later'
+          response.status = 500
         rescue StandardError => e
           puts "FAILURE Creating Request: #{e.inspect}"
-          flash[:error] = 'Could not create request'
+          flash[:error] = 'You are not allowed to add more requests'
         ensure
           routing.redirect @requests_route
         end
