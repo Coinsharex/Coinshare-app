@@ -3,7 +3,7 @@
 module Coinbase
   # Information regarding a single request
   class Request
-    attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active, # basic info
+    attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active, :created_at, # basic info
                 :requestor, :donations, :policies # full_details
 
     # :summary
@@ -24,6 +24,7 @@ module Coinbase
       @amount = attributes['amount']
       @picture = attributes['picture']
       @active = attributes['active']
+      @created_at = attributes['created_at']
     end
 
     def process_relationships(relationships)

@@ -115,7 +115,7 @@ module Coinbase
           flash[:error] = 'You already posted 2 requests this month'
           response.status = 401
         rescue CreateNewRequest::YearlyFundsAllownaceError
-          flash[:error] = 'You have asked more than the allowed threshold for the year'
+          flash[:error] = 'You have asked more funds than the allowed threshold for the year'
           response.status = 403
         rescue AuthenticateAccount::ApiServerError => e
           App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
