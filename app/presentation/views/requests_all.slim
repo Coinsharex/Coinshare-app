@@ -18,7 +18,10 @@
       .heading-20219
         h2.mt-3.title.text-cursive All Requests
   .row
+    - if requests.all.empty?
+      a.mt-3.title.btn.btn-primary.nav-link href="/requests/new" Create a New Request
     - requests.all.each do |req|
+      - percentage = req.summary.nil? ? 0 : ((req.summary.amount / req.amount.to_f) * 100).to_i
       .col-md-4
         .cause.shadow-sm
           a.cause-link.d-block href="/requests/#{req.id}" 
@@ -27,14 +30,14 @@
             - if req.picture != 'haha'
                img.img-fluid alt="Image" src="data:image/jpeg;base64,#{req.picture}" /
             .custom-progress-wrap
-              span.caption 80% complete
+              span.caption #{percentage.clamp(0, 100)}% complete
               .custom-progress-inner
                 - if req.category == 'health'
-                  .custom-progress.bg-primary style=("width: 80%;") 
+                  .custom-progress.bg-primary style=("width: #{percentage.clamp(0, 100)}%;") 
                 - if req.category == 'school'
-                  .custom-progress.bg-danger style=("width: 80%;") 
+                  .custom-progress.bg-danger style=("width: #{percentage.clamp(0, 100)}%;") 
                 - if req.category == 'livelihood'
-                  .custom-progress.bg-warning style=("width: 80%;") 
+                  .custom-progress.bg-warning style=("width: #{percentage.clamp(0, 100)}%;") 
           .px-3.pt-3.border-top-0.border.border.shadow-sm
             - if req.category == 'health'
               span.badge-primary.py-1.small.px-2.rounded.mb-3.d-inline-block Health

@@ -3,7 +3,7 @@
 require 'http'
 
 module Coinbase
-  # Create a new configuration file for a request
+  # Create a new request
   class CreateNewRequest
     class MonthlyRequestAllowanceError < StandardError; end
 

@@ -23,23 +23,23 @@ module Coinbase
     end
 
     def occupation
-      @account_info ? @account_info['occupation'] : nil
+      @account_info ? @account_info['attributes']['occupation'] : nil
     end
 
     def university
-      @account_info ? @account_info['university'] : nil
+      @account_info ? @account_info['attributes']['university'] : nil
     end
 
     def field_of_study
-      @account_info ? @account_info['field_of_study'] : nil
+      @account_info ? @account_info['attributes']['field_of_study'] : nil
     end
 
     def study_level
-      @account_info ? @account_info['study_level'] : nil
+      @account_info ? @account_info['attributes']['study_level'] : nil
     end
 
     def picture
-      @account_info ? @account_info['picture'] : nil
+      @account_info ? @account_info['attributes']['picture'] : nil
     end
 
     def logged_out?

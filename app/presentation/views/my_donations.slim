@@ -1,0 +1,59 @@
+== render :nice
+== render :nav
+== assets([:css, :animate])
+== assets([:css, :aos])
+== assets([:css, :boot])
+== assets([:css, :carousel])
+== assets([:css, :carousel1])
+== assets([:css, :date])
+== assets([:css, :iconmoon])
+== assets([:css, :jquery])
+== assets([:css, :default])
+
+section[style="background-color: #eee;"]
+  .container.py-5
+    .row
+      - if donations.all.empty?
+        .col-lg-12
+          .card.mb-4
+            .card-body
+              h5.mb-4 style="color: black;"
+                | No Donations Yet
+      - else
+        .col-lg-12
+          h3.mb-3 style="color: black;" Your donations
+        - donations.all.each do |donation|
+          .col-lg-12
+            .card.mb-4
+              .card-body
+                h5.mb-4 
+                  span style="color: black;" Transaction_ID &ensp;
+                  | #{donation.identifier}
+                .row
+                  .col-sm-3
+                    p.mb-0
+                      | Donated Amount
+                  .col-sm-9
+                    p.text-muted.mb-0
+                      | #{donation.amount}
+                hr
+                - if donation.comment.length > 2
+                  .row
+                    .col-sm-3
+                      p.mb-0
+                        | Comment
+                    .col-sm-9
+                      p.text-muted.mb-0
+                        | #{donation.comment}
+                  hr
+                .row
+                  .col-sm-3
+                    p.mb-0
+                      | Created on
+                    - date = Date.parse(donation.created_at)  
+                  .col-sm-9
+                    p.text-muted.mb-0
+                      | #{date}
+                hr
+                
+             

@@ -9,6 +9,7 @@ module Coinbase
     plugin :flash
     route('account') do |routing|
       routing.on do
+        routing.public
         # GET /account
         routing.get String do |email|
           if @current_account && @current_account.email == email

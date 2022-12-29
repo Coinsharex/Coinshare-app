@@ -12,20 +12,6 @@
 == assets([:css, :test])
 
 
-/ .container
-/   - if request.title.length > 25  
-/     h1.mt-5.ml-2.title #{request.title.slice(0,25)...}
-/   - if request.title.length <= 25
-/     h1.mt-5.ml-2.title #{request.title}
-/   .main
-/     .container
-/       .row
-/         .col-md-8
-/           .img.mt-2.img-fluid.rounded alt="Image" style="background-image:url('data:image/jpeg;base64,#{request.picture}');" src="data:image/jpeg;base64,#{request.picture}"  /
-/         .col-md-4 
-/           p
-/           | HAHA
-
 | <!doctype html> 
 html[lang="en"]
   head
@@ -47,12 +33,13 @@ html[lang="en"]
           |  #{request.title} 
 
     main.container[role="main"]
+      - name = request.requestor.account_info == current_account.account_info ? 'You' : "#{request.requestor.first_name} #{request.requestor.last_name}"
       .row
         .col-md-8.blog-main
           .img.mt-2.img-fluid.rounded.mb-3 alt="Image" style="background-image:url('data:image/jpeg;base64,#{request.picture}');"
           p 
             i class="fas fa-user" aria-hidden="true"
-            |  &ensp; Fundraiser started by #{request.requestor.first_name} #{request.requestor.last_name}
+            |  &ensp; Fundraiser started by #{name}
           /img.card-img-right.flex-auto.d-none.d-md-block[src="data:image/jpeg;base64,#{request.picture}" alt="Card image cap"]
           hr
           - time = (Date.today() - Date.parse(request.created_at)).to_i
@@ -77,39 +64,71 @@ html[lang="en"]
             p.blog-post-meta.mt-4
               |  #{request.description}
           hr
-          / h2.mb-3 style=("color: black !important;")
-          /   | Organizer
+          - comments_available = request.donations.filter {|donation| donation.comment.length > 2}
+          - unless comments_available.empty?
+            h3.mb-3.mt-3 style=("color: black !important;")
+              | Words of support (#{comments_available.count})
+            - comments_available.each do |donation|
+              .list-group-item-action.d-flex.gap-3.mt-2[href="#" aria-current="true"]
+                span.text-primary 
+                  i.ml-2.mt-2 class="fas fa-user fa-2x" width="200px" aria-hidden="true"&ensp;
+                .d-flex.gap-2.w-100.justify-content-between
+                  div
+                    p.mb-0.mt-0 style="font-weight: bold; color:black;"
+                      - if donation.anonymous 
+                        |  Anonymous
+                      - unless donation.anonymous
+                        |  #{donation.donor.first_name} #{donation.donor.last_name}
+                    p.mt-0.mb-3
+                      | #{donation.comment}
           /i class="fas fa-user" aria-hidden="true"
         .col-md-4.mt-2
           .position-sticky style=("top: 2rem;")
             .p-3.mb-3.bg-light.rounded
+              - amount = request.summary.nil? ? 0 : request.summary.amount
               h3.mb-2 style=("color: black !important;")
-                | $2500
+                | $#{amount}
                 span style=("font-size: 16px; color: gray")
                   |   USD raised of $#{request.amount} goal
               - style = request.category == 'school' ? 'bg-danger' : request.category == 'livelihood' ? 'bg-warning' : 'bg-primary'
+              - percentage = request.summary.nil? ? 0 : ((request.summary.amount / request.amount.to_f) * 100).to_i
               .cause.shadow-sm.mt-3.rounded.mb-0
                 a.cause-link.d-block href="#" 
                   .custom-progress-wrap
                     .custom-progress-inner
-                      .custom-progress class="#{style}" style=("width: 80%;") 
+                      .custom-progress class="#{style}" style=("width: #{percentage.clamp(0, 100)}%;") 
+              - donors_count = request.summary.nil? ? 0 : request.summary.count
               p.pt-2 
-                | 200 donations
+                | #{donors_count} donations
               / button.rounded.btn.btn-primary.mb-2.btn-block[type="button" data-toggle="modal" data-target="#exampleModal"]
                 |  Donate Now
-              button.rounded.btn.btn-primary.mb-2.btn-block[type="button" data-toggle="modal" data-target="#exampleModalCenter"]
-                |  Donate Now
-              h4 
+              - if request.policies.can_add_donations
+                button.rounded.btn.btn-primary.mb-2.btn-block[type="button" data-toggle="modal" data-target="#exampleModalCenter"]
+                  |  Donate Now
+              - if request.policies.can_edit
+                button.rounded.btn.btn-primary.mb-2.btn-block[type="button" data-toggle="modal" data-target="#editRequest"]
+                  |  Edit Request
+              h4.mb-2 
                 | Donors
-              a.list-group-item-action.d-flex.gap-3.pt-3[href="#" aria-current="true"]
-                i.ml-2.mt-2 class="fas fa-user fa-2x" width="200px" aria-hidden="true"&ensp;
-                .d-flex.gap-2.w-100.justify-content-between
-                  div
-                    p.mb-0 style="font-weight: bold; color:black;"
-                      | Fabrice Marcelin
-                    p.mt-0.mb-0.opacity-75
-                      | 20$
-              hr
+              - if request.donations.empty?
+                p style="font-weight: bold; color:black;"
+                  | No donors yet 
+              - request.donations.last(3).each do |donation|
+                .list-group-item-action.d-flex.gap-3.mt-2[href="#" aria-current="true"]
+                  i.ml-2.mt-3 class="fas fa-user fa-2x" width="200px" aria-hidden="true"&emsp;
+                  .d-flex.gap-2.w-100.justify-content-between
+                    div
+                      p.mb-0.mt-0 
+                        - if donation.anonymous 
+                          |  Anonymous
+                        - unless donation.anonymous
+                          |  #{donation.donor.first_name} #{donation.donor.last_name}
+                      p.mt-0.mb-0 style="font-weight: bold; color:black;"
+                        | $#{donation.amount}
+                hr
+              - if request.donations.count > 3
+                button.btn.btn-outline-success.mb-2[type="button" data-toggle="modal" data-target="#allDonations"]
+                  | See all Donations
     #exampleModalCenter.modal.fade[tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"]
       .modal-dialog.modal-dialog-centered[role="document"]
         .modal-content
@@ -130,7 +149,7 @@ html[lang="en"]
                   | Words of Support:
                 textarea#message-text.form-control[name="comment"]
                 span.mt-3 style=("font-weight: bold; font-size: 12px; color: black;")
-                  | An 8% platform fee will be deducted from your account.
+                  | An 5% platform fee will be deducted from your account.
               input#anonymous.mr-2[type="checkbox" name="anonymous" value="true"]
               label.col-form-label[for="anonymous"]
                 | Anonymous donation
@@ -139,4 +158,94 @@ html[lang="en"]
                 | Close
               button.btn.btn-primary[type="submit"]
                 | Proceed
+
+    #allDonations.modal.fade[tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"]
+      .modal-dialog.modal-dialog-centered[role="document"]
+        .modal-content
+          .modal-header
+            h5#exampleModalLongTitle.modal-title
+              | All Donations
+            button.close[type="button" data-dismiss="modal" aria-label="Close"]
+              span[aria-hidden="true"]
+                | ×
+          .modal-body
+            .form-group
+              - request.donations.each do |donation|
+                .list-group-item-action.d-flex.gap-3.mt-2
+                  i.ml-2.mt-3 class="fas fa-user fa-2x" width="200px" aria-hidden="true"&emsp;
+                  .d-flex.gap-2.w-100.justify-content-between
+                    div
+                      p.mb-0.mt-0 
+                        - if donation.anonymous 
+                          |  Anonymous
+                        - unless donation.anonymous
+                          |  #{donation.donor.first_name} #{donation.donor.last_name}
+                      p.mt-0.mb-0 style="font-weight: bold; color:black;"
+                        | $#{donation.amount}
+                hr
+
+    #editRequest.modal.fade[tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"]
+      .modal-dialog.modal-dialog-centered[role="document"]
+        .modal-content
+          .modal-header
+            h5#exampleModalLongTitle.modal-title
+              | Edit Request
+            button.close[type="button" data-dismiss="modal" aria-label="Close"]
+              span[aria-hidden="true"]
+                | ×
+          / form role="form" action="/requests/#{request.id}" method='post' id='upload-file-form'
+          form.signin-form method='post' action='/requests/#{request.id}' id='form-login' enctype="multipart/form-data"
+            .modal-body
+              .form-group.mb-3
+                label.label for="title"  Title
+                input.form-control placeholder="Title" value="#{request.title}"required="" minlength="20" maxlength="255" name='title' type="text" /
+              .form-group.mb-3
+                label.label for="description"  Description
+                textarea.form-control placeholder="Description" required="" minlength="200" maxlength="1440" name='description' 
+                  | #{request.description}
+              .form-group.mb-3
+                label.label for="location"  Location
+                select.bg-white.border-md.form-control.custom-select name="location" required="" value="#{request.location}"
+                  option value=""  Choose your location
+                  option value="Taiwan"  Taiwan
+                  option value="China"  China
+                  option value="Vietnam"  Vietnam
+                  option value="Indenosia"  Indonesia
+                  option value="South korea"  South Korea
+                  option value="Thailand"  Thailand
+                  option value="USA"  USA
+                  option value="Canada"  Canada
+                  option value="Chile"  Chile
+                  option value="Mexico"  Mexico
+                  option value="Bresil"  Brazil
+                  option value="Argentina"  Argentina
+                  option value="Haiti"  Haiti
+                  option value="France"  France
+                  option value="Russia"  Russia
+                  option value="Ukraine"  Ukraine
+              .form-group.mb-3
+                label.label for="category"  Category
+                select.bg-white.border-md.form-control.custom-select name="category" required="" value="#{request.category}"
+                  option value=""  Choose one category
+                  option value="school"  School
+                  option value="health"  Health
+                  option value="livelihood"  Lifelihood
+              .form-group.mb-3
+                label.label for="amount"  Amount
+                / change max value to meet guys' criteria
+                input.form-control placeholder="5000 USD" required="" value="#{request.amount}" name='amount' type="number" min=5 max=5000
+              .form-group.mb-3
+                label.label for='picture' Help Image
+                input.form-control{
+                  type="file"
+                  id='picture' 
+                  accept="image/jpeg"
+                  name="picture" 
+                }
+            .modal-footer
+              button.btn.btn-secondary[type="button" data-dismiss="modal"]
+                | Close
+              button.btn.btn-primary.rounded.submit.px-3[type="submit"]
+                | Upload
+              
 

@@ -4,17 +4,16 @@ require_relative 'form_base'
 
 module Coinbase
   module Form
-    # Rules for adding a new request
-    class NewRequest < Dry::Validation::Contract
-      # config.messages.load_paths << File.join(__dir__, 'errors/new_request.yml')
-
+    # Checks when updating an existing request
+    class EditRequest < Dry::Validation::Contract
+      # config.messages.load_paths << File.join(__dir__, 'errors/edit_request_error.yml')
       params do
         required(:title).filled(min_size?: 20, max_size?: 255)
         required(:description).filled(min_size?: 200, max_size?: 1440)
         required(:amount).filled
         required(:location).filled
         required(:category).filled
-        required(:picture).filled
+        optional(:picture).filled
       end
 
       rule(:title) do
@@ -29,11 +28,6 @@ module Coinbase
         end
       end
 
-      rule(:picture) do
-        key.failure('Only supports images') unless value[:type] == 'image/jpeg'
-        key.failure('Image file size is too big') unless value[:tempfile].size / 1024 < 1_000 # LESS THAN: 1MB
-      end
-
       rule(:amount) do
         key.failure('The entered value should be between 5$ and 5000$') unless value.to_i >= 5 && value.to_i <= 5000
       end
@@ -44,6 +38,11 @@ module Coinbase
 
       rule(:location) do
         key.failure('Please enter a valid location') if value.length < 3
+      end
+
+      rule(:picture) do
+        key.failure('Only supports images') if key? && (value[:type] != 'image/jpeg')
+        key.failure('Image file size is too big') if key? && value[:tempfile].size / 1024 > 1_000 # GREATER THAN: 1MB
       end
     end
   end

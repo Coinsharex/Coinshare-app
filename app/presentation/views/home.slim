@@ -21,75 +21,76 @@
       .ftco-cover-1.overlay style=("background-image: url('images/hero5.jpg');") 
       .ftco-cover-1.overlay style=("background-image: url('images/hero6.jpg');") 
 .container
-  .row.mb-5.align-items-st
-    .col-md-9
-      .heading-20219
-        h2.mt-5.title.text-cursive Categories
-  .feature-29192-wrap.d-md-flex style=("margin-top: -20px; position: relative;") 
-    a.feature-29192.overlay-danger href="/requests/categories/school" style=("background-image: url('images/hero4_gray.jpg');") 
-      .text
-        span.meta School
-        h3.text-cursive.text-white.h1 Help students
-    a.feature-29192.overlay-success href="/requests/categories/health" style=("background-image: url('images/hero5_2_gray.jpg');") 
-      .text
-        span.meta Health
-        h3.text-cursive.text-white.h1 Help sick persons
-    a.feature-29192.overlay-warning href="/requests/categories/livelihood" style=("background-image: url('images/hero6_gray.jpg');") 
-      .text
-        span.meta Livelihood
-        h3.text-cursive.text-white.h1 Improve life
-.container
-  .row.mb-5.align-items-st
-    .col-md-9
-      .heading-20219
-        h2.mt-5.title.text-cursive Latest Requests
-  .row
-    .col-md-4
-      .cause.shadow-sm
-        a.cause-link.d-block href="#" 
-          img.img-fluid alt="Image" src="images/hero_4.jpg" /
-          .custom-progress-wrap
-            span.caption 80% complete
-            .custom-progress-inner
-              .custom-progress.bg-danger style=("width: 80%;") 
-        .px-3.pt-3.border-top-0.border.border.shadow-sm
-          span.badge-danger.py-1.small.px-2.rounded.mb-3.d-inline-block School
-          h3.mb-4
-            a href="#"  Alias Odit Ipsam Quas Unde Obcaecati
-          .border-top.border-light.border-bottom.py-2.d-flex
-            div Donated
-            .ml-auto
-              strong.text-primary $940
-    .col-md-4
-      .cause.shadow-sm
-        a.cause-link.d-block href="#" 
-          img.img-fluid alt="Image" src="images/hero5_2.jpg" /
-          .custom-progress-wrap
-            span.caption 80% complete
-            .custom-progress-inner
-              .custom-progress.bg-primary style=("width: 80%;") 
-        .px-3.pt-3.border-top-0.border.border.shadow-sm
-          span.badge-primary.py-1.small.px-2.rounded.mb-3.d-inline-block Health
-          h3.mb-4
-            a href="#"  Alias Odit Ipsam Quas Unde Obcaecati
-          .border-top.border-light.border-bottom.py-2.d-flex
-            div Donated
-            .ml-auto
-              strong.text-primary $1,290
-    .col-md-4
-      .cause.shadow-sm
-        a.cause-link.d-block href="#" 
-          img.img-fluid alt="Image" src="images/hero7.jpg" /
-          .custom-progress-wrap
-            span.caption 80% complete
-            .custom-progress-inner
-              .custom-progress.bg-warning style=("width: 80%;") 
-        .px-3.pt-3.border-top-0.border.border
-          span.badge-warning.py-1.small.px-2.rounded.mb-3.d-inline-block Livelihood
-          h3.mb-4
-            a href="#"  Alias Odit Ipsam Quas Unde Obcaecati
-          .border-top.border-light.border-bottom.py-2.d-flex
-            div Donated
-            .ml-auto
-              strong.text-primary $2,919
+    .row.mb-5.align-items-st
+      .col-md-9
+        .heading-20219
+          h2.mt-5.title.text-cursive Categories
+    .feature-29192-wrap.d-md-flex style=("margin-top: -20px; position: relative;") 
+      a.feature-29192.overlay-danger href="/requests/categories/school" style=("background-image: url('images/hero4_gray.jpg');") 
+        .text
+          span.meta School
+          h3.text-cursive.text-white.h1 Help students
+      a.feature-29192.overlay-success href="/requests/categories/health" style=("background-image: url('images/hero5_2_gray.jpg');") 
+        .text
+          span.meta Health
+          h3.text-cursive.text-white.h1 Help sick persons
+      a.feature-29192.overlay-warning href="/requests/categories/livelihood" style=("background-image: url('images/hero6_gray.jpg');") 
+        .text
+          span.meta Livelihood
+          h3.text-cursive.text-white.h1 Improve life
+- if current_account.logged_in?     
+  .container
+    .row.mb-5.align-items-st
+      .col-md-9
+        .heading-20219
+          h2.mt-5.title.text-cursive Latest Requests
+    .row
+      .col-md-4
+        .cause.shadow-sm
+          a.cause-link.d-block href="#" 
+            img.img-fluid alt="Image" src="images/hero_4.jpg" /
+            .custom-progress-wrap
+              span.caption 80% complete
+              .custom-progress-inner
+                .custom-progress.bg-danger style=("width: 80%;") 
+          .px-3.pt-3.border-top-0.border.border.shadow-sm
+            span.badge-danger.py-1.small.px-2.rounded.mb-3.d-inline-block School
+            h3.mb-4
+              a href="#"  Alias Odit Ipsam Quas Unde Obcaecati
+            .border-top.border-light.border-bottom.py-2.d-flex
+              div Donated
+              .ml-auto
+                strong.text-primary $940
+      .col-md-4
+        .cause.shadow-sm
+          a.cause-link.d-block href="#" 
+            img.img-fluid alt="Image" src="images/hero5_2.jpg" /
+            .custom-progress-wrap
+              span.caption 80% complete
+              .custom-progress-inner
+                .custom-progress.bg-primary style=("width: 80%;") 
+          .px-3.pt-3.border-top-0.border.border.shadow-sm
+            span.badge-primary.py-1.small.px-2.rounded.mb-3.d-inline-block Health
+            h3.mb-4
+              a href="#"  Alias Odit Ipsam Quas Unde Obcaecati
+            .border-top.border-light.border-bottom.py-2.d-flex
+              div Donated
+              .ml-auto
+                strong.text-primary $1,290
+      .col-md-4
+        .cause.shadow-sm
+          a.cause-link.d-block href="#" 
+            img.img-fluid alt="Image" src="images/hero7.jpg" /
+            .custom-progress-wrap
+              span.caption 80% complete
+              .custom-progress-inner
+                .custom-progress.bg-warning style=("width: 80%;") 
+          .px-3.pt-3.border-top-0.border.border
+            span.badge-warning.py-1.small.px-2.rounded.mb-3.d-inline-block Livelihood
+            h3.mb-4
+              a href="#"  Alias Odit Ipsam Quas Unde Obcaecati
+            .border-top.border-light.border-bottom.py-2.d-flex
+              div Donated
+              .ml-auto
+                strong.text-primary $2,919
 

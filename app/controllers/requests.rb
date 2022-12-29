@@ -12,6 +12,18 @@ module Coinbase
         routing.redirect '/auth/login' unless @current_account.logged_in?
         @requests_route = '/requests'
 
+        routing.on('my-requests') do
+          # GET /requests/my-requests
+          routing.get do
+            my_requests = GetMyRequests.new(App.config).call(@current_account)
+
+            @requests = Requests.new(my_requests)
+
+            view :requests_all,
+                 locals: { current_user: @current_account, requests: @requests }
+          end
+        end
+
         routing.on('categories') do
           routing.on(String) do |category|
             # GET /requests/categories/{category}
@@ -58,29 +70,35 @@ module Coinbase
               routing.redirect @requests_route
             end
 
-            # POST /requests/[req_id]/donations/
-            # TO BE DONE LATER
-            routing.post('donations') do
-              # 1) Determine what kind of data that needs to be in the donation
-              #  donation_data = Form::NewDonation.new.call(routing.params)
-              #  if donation_data.failure?
-              #    flash[:error] = Form.message_values(donation_data)
-              #    routing.halt
-              #  end
+            # Update existing Request
+            # POST /requests/[ID] -> new data
+            routing.post do
+              updated_request_data = Form::EditRequest.new.call(routing.params)
 
-              # CreateNewDonation.new(App.config).call(
-              #  current_account: @current_account,
-              #  request_id:
-              #  donation_data : donation_data.to_h
-              # )
+              if updated_request_data.failure?
+                flash[:error] = Form.message_values(updated_request_data)
+                routing.halt
+              end
 
-              # flash[:notice] = 'Your donation was successfully added'
-              # rescue StandardError => error
-              # puts error.inspect
-              # puts error.backtrace
-              # flash[:error] = 'Could not add donatoon'
-              # ensure
-              # routing.redirect @request_route
+              UpdateRequest.new(App.config).call(
+                current_account: @current_account,
+                request_id:,
+                updated_request_data: updated_request_data.to_h
+              )
+
+              flash[:notice] = 'Request successfully updated'
+            rescue UpdateRequest::YearlyFundsAllownaceError
+              flash[:error] = 'You have asked more funds than the allowed threshold for the year'
+              response.status = 403
+            rescue UpdateRequest::ApiServerError => e
+              App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
+              flash[:error] = 'Our servers are not responding -- please try later'
+              response.status = 500
+            rescue StandardError => e
+              puts "FAILURE Creating Request: #{e.inspect}"
+              flash[:error] = 'You are not allowed to update more requests'
+            ensure
+              routing.redirect @requests_route
             end
           end
         end
@@ -117,7 +135,7 @@ module Coinbase
         rescue CreateNewRequest::YearlyFundsAllownaceError
           flash[:error] = 'You have asked more funds than the allowed threshold for the year'
           response.status = 403
-        rescue AuthenticateAccount::ApiServerError => e
+        rescue CreateNewRequest::ApiServerError => e
           App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Our servers are not responding -- please try later'
           response.status = 500

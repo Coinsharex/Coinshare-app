@@ -7,6 +7,7 @@ module Coinbase
   # Web controller for Coinbase APP
   class App < Roda
     plugin :flash
+
     route('checkout') do |routing|
       routing.on(String) do |request_id|
         routing.redirect '/auth/login' unless @current_account.logged_in?
@@ -17,17 +18,20 @@ module Coinbase
             flash[:error] = Form.message_values(checkout_data)
             routing.halt
           end
-          session = CreateNewCheckoutSession.new(App.config).call(
+          sesh = CreateNewCheckoutSession.new(App.config).call(
             current_account: @current_account,
             checkout_data: checkout_data.to_h
           )
-          PersistDonationData.new(App.config).call(
-            current_account: @current_account,
-            session:,
+
+          data = {
+            sesh:,
             request_id:,
             checkout_data: checkout_data.to_h
-          )
-          routing.redirect session.url, 303
+          }
+
+          CurrentSession.new(session).donation_data = data
+          routing.redirect sesh.url, 303
+          # routing.redirect '/success'
           # TODO: Catch the errors that can be thrown
         end
       end
@@ -36,6 +40,15 @@ module Coinbase
     route('success') do |routing|
       # GET /success
       routing.get do
+        routing.public
+        routing.redirect '/auth/login' unless @current_account.logged_in?
+        donation_data = CurrentSession.new(session).donation_data
+        PersistDonationData.new(App.config).call(
+          current_account: @current_account,
+          data: donation_data
+        )
+
+        CurrentSession.new(session).delete_donation
         view :success
       end
     end
@@ -43,6 +56,8 @@ module Coinbase
     route('cancel') do |routing|
       # GET /cancel
       routing.get do
+        routing.public
+        CurrentSession.new(session).delete_donation
         view :cancel
       end
     end

@@ -15,7 +15,7 @@ module Coinbase
       end
 
       rule(:comment) do
-        if key? && (value.length < 10 && value.length > 300)
+        if key? && (value.length < 5 && value.length > 300)
           key.failure('Your comment should be between 10 and 300 characters long')
         end
       end

@@ -4,9 +4,8 @@ module Coinbase
   # Information regarding a single request
   class Request
     attr_reader :id, :title, :description, :location, :category, :amount, :picture, :active, :created_at, # basic info
-                :requestor, :donations, :policies # full_details
+                :requestor, :donations, :summary, :policies # full_details
 
-    # :summary
     def initialize(req_info)
       process_attributes(req_info['attributes'])
       process_relationships(req_info['relationships'])
@@ -31,7 +30,7 @@ module Coinbase
       return unless relationships
 
       @requestor = Account.new(relationships['requestor'])
-      # @summary = Summary.new(relationships['summary'])
+      @summary = Summary.new(relationships['summary']) unless relationships['summary'].nil?
       @donations = process_donations(relationships['donations'])
     end
 
