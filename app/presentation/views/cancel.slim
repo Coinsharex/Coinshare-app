@@ -1,0 +1,50 @@
+== render :nice
+== assets([:css, :login])
+html lang="en" 
+  head
+    title Login 
+    meta charset="utf-8" /
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" /
+    link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" /
+    link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /
+    / link href="css/style.css" rel="stylesheet" /
+  body
+    section.ftco-section
+      .container
+        .row.justify-content-center
+          .col-md-6.text-center.mb-5
+            a href="/"
+              h2.heading-section Fundus
+        .row.justify-content-center
+          .col-md-12.col-lg-10
+            .wrap.d-md-flex
+              .img style=("background-image: url(images/hero6.jpg);") 
+              .login-wrap.p-4.p-md-5
+                .d-flex
+                  .w-100
+                    h3.mb-4 Donation Cancelled
+                form.signin-form 
+                  .form-group.mb-3
+                    label.label for="name"  Cancelled☹️
+                    p
+                      | Your donation has been cancelled! If you have any questions, please email us at 
+                      a style=("color: blue; font-weigth:bold;") data-toggle="tab" href="mailto:fundus.edu@gmail.com"
+                        | fundus.edu@gmail.com
+                p.text-center
+                | Want to donate to another cause?
+                a data-toggle="tab" href="/"  Return Home
+    script src="js/jquery.min.js" 
+    script src="js/popper.js" 
+    script src="js/bootstrap.min.js" 
+    script src="js/main.js" 
+
+/ doctype html
+/ html
+/   head
+/     title
+/       | Checkout canceled
+/     link[rel="stylesheet" href="style.css"]
+/   body
+/     section
+/       p
+/         | Forgot to add something to your cart? Shop around then come back to pay!

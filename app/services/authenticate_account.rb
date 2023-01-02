@@ -17,7 +17,6 @@ module Coinbase
       raise(ApiServerError) if response.code != 200
 
       account_info = JSON.parse(response.to_s)['data']['attributes']
-
       {
         account: account_info['account'],
         auth_token: account_info['auth_token']

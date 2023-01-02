@@ -30,9 +30,13 @@ html lang="en"
                 form.signin-form method='post' action='/auth/login' id='form-login'
                   .form-group.mb-3
                     label.label for="name"  Email
+                    span style="color: red;"
+                      | *
                     input.form-control placeholder="Email" required=""  name='email' type="email" /
                   .form-group.mb-3
                     label.label for="password"  Password
+                    span style="color: red;"
+                      | *
                     input.form-control placeholder="Password"  name='password' required="" type="password" /
                   .form-group
                     button.form-control.btn.btn-primary.rounded.submit.px-3 type="submit"  Sign In

@@ -10,35 +10,133 @@
 == assets([:css, :jquery])
 == assets([:css, :default])
 
-.container
-  .feature-29192-wrap.d-md-flex style=("margin-top: -20px; position: relative; z-index: 2;") 
-    h1.mt-5 Account Details
-    .container.mt-5
-      div class="row"
-        div class="col-sm-2" First Name:
-        div class="col-sm-10"
-          == current_account.first_name
-      div class="row"
-        div class="col-sm-2" Last Name:
-        div class="col-sm-10"
-          == current_account.last_name
-      div class="row"
-        div class="col-sm-2" Email:
-        div class="col-sm-10"
-          == current_account.email
-      div class="row"
-        div class="col-sm-2" Occupation:
-        div class="col-sm-10"
-          == current_account.occupation
-      div class="row"
-        div class="col-sm-2" University:
-        div class="col-sm-10"
-          == current_account.university
-      div class="row"
-        div class="col-sm-2" Field of study:
-        div class="col-sm-10"
-          == current_account.field_of_study
-      div class="row"
-        div class="col-sm-2" Study Level:
-        div class="col-sm-10"
-          == current_account.study_level
+/ Ability to update the user account
+/ Render different type of image based on user account type
+
+section[style="background-color: #eee;"]
+  .container.py-5
+    .row
+      .col-lg-4
+        .card.mb-4
+          .card-body.text-center
+            - image = current_account.picture.nil? ? 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' : current_account.picture
+            img.rounded-circle.img-fluid[src="#{image}" alt="avatar" style="width: 150px;"]
+            h5.my-3
+              | #{current_account.first_name} 
+            p.text-muted.mb-1
+              - if current_account.occupation.empty?
+                | N/A
+              - else
+                | #{current_account.occupation.capitalize} 😎
+            p.text-muted.mb-4
+              - if current_account.address.empty?
+                | N/A
+              - else
+                | #{current_account.address}
+            .d-flex.justify-content-center.mb-2
+              / This will redirect the user to all requests page 
+              a.btn.btn-primary[href="/requests/my-requests" style="color: white;"] 
+                | My Requests
+              a.ml-3.btn.btn-warning.ms-1[type="button" href="/my-donations"]
+                | My Donations
+      .col-lg-8
+        .card.mb-4
+          .card-body
+            h4.mb-4 style="color: black;"
+              | Personal Details
+            .row
+              .col-sm-3
+                p.mb-0
+                  | Full Name
+              .col-sm-9
+                p.text-muted.mb-0
+                  | #{current_account.first_name} #{current_account.last_name}
+            hr
+            .row
+              .col-sm-3
+                p.mb-0
+                  | Email
+              .col-sm-9
+                p.text-muted.mb-0
+                  | #{current_account.email}
+            hr
+            .row
+              .col-sm-3
+                p.mb-0
+                  | Contact Number
+              .col-sm-9
+                p.text-muted.mb-0
+                  - if current_account.contact_number.empty?
+                    | N/A
+                  - else
+                    | #{current_account.contact_number}
+            hr
+            .row
+              .col-sm-3
+                p.mb-0
+                  | University
+              .col-sm-9
+                p.text-muted.mb-0
+                  - if current_account.university.empty?
+                    | N/A
+                  - else
+                    | #{current_account.university}
+            hr
+            .row
+              .col-sm-3
+                p.mb-0
+                  | Study Level
+              .col-sm-9
+                p.text-muted.mb-0
+                  - if current_account.study_level.empty?
+                    | N/A
+                  - else
+                    | #{current_account.study_level.capitalize}
+            hr
+            .row
+              .col-sm-3
+                p.mb-0
+                  | Address
+              .col-sm-9
+                p.text-muted.mb-0
+                  - if current_account.address.empty?
+                    | N/A
+                  - else
+                    | #{current_account.address}
+        .row
+          .col-md-12
+            .card.mb-4.mb-md-0
+              .card-body
+                h4.mb-4 style="color: black;"
+                  | Bank Account
+                .row
+                  .col-sm-3
+                    p.mb-0
+                      | Bank Name
+                  .col-sm-9
+                    p.text-muted.mb-0
+                      - if current_account.bank_name.empty?
+                        | N/A
+                      - else 
+                        | #{current_account.bank_name}
+                hr
+                .row
+                  .col-sm-3
+                    p.mb-0
+                      | Account Number
+                  .col-sm-9
+                    p.text-muted.mb-0
+                      - if current_account.bank_account.empty?
+                        | N/A
+                      - else
+                        | #{current_account.bank_account}
+                hr
+                / .row
+                /   .col-sm-3
+                /     p.mb-0
+                /       | Available Amount
+                /   .col-sm-9
+                /     button.btn.btn-outline-primary.mb-0
+                /       | #{current_account.first_name} #{current_account.last_name}
+                / hr
+                

@@ -1,5 +1,6 @@
 == render :nice
 == assets([:css, :login])
+/ if user does not have a bank account setup, ask the fully complete the profile
 html lang="en" 
   head
     title New Request 
@@ -8,14 +9,14 @@ html lang="en"
     link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" /
     link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /
     / link href="css/style.css" rel="stylesheet" /
-  body
+  body 
     section.ftco-section
       .container
         .row.justify-content-center
           .col-md-6.text-center.mb-5
             a href="/"
               h2.heading-section Fundus
-        .row.justify-content-center
+        .row.justify-content-center 
           .col-md-12.col-lg-10
             .wrap.d-md-flex
               .img style=("background-image: url(images/hero6.jpg);") 

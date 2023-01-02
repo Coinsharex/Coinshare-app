@@ -3,8 +3,14 @@
 require 'http'
 
 module Coinbase
-  # Create a new configuration file for a request
+  # Create a new request
   class CreateNewRequest
+    class MonthlyRequestAllowanceError < StandardError; end
+
+    class YearlyFundsAllownaceError < StandardError; end
+
+    class ApiServerError < StandardError; end
+
     def initialize(config)
       @config = config
     end
@@ -27,7 +33,11 @@ module Coinbase
       response = HTTP.auth("Bearer #{current_account.auth_token}")
                      .post(config_url, json: info)
 
-      response.code == 201 ? JSON.parse(response.body.to_s) : raise
+      raise(MonthlyRequestAllowanceError) if response.code == 401
+      raise(YearlyFundsAllownaceError) if response.code == 403
+      raise(ApiServerError) if response.code != 201
+
+      JSON.parse(response.body.to_s)
     end
   end
 end

@@ -49,7 +49,7 @@ module Coinbase
           flash[:notice] = "Welcome back #{current_account.first_name} #{current_account.last_name}!"
           routing.redirect '/'
         rescue AuthenticateAccount::NotAuthenticatedError
-          flash.now[:error] = 'Email and password did not match our records'
+          flash[:error] = 'Email and password did not match our records'
           response.status = 401
           routing.redirect @login_route
         rescue AuthenticateAccount::ApiServerError => e

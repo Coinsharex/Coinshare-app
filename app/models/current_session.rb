@@ -19,6 +19,24 @@ module Coinbase
       @secure_session.set(:auth_token, current_account.auth_token)
     end
 
+    def donation_data=(data)
+      @secure_session.set(:stripe_session, data[:sesh])
+      @secure_session.set(:request_id, data[:request_id])
+      @secure_session.set(:checkout_data, data[:checkout_data])
+    end
+
+    def donation_data
+      DonationData.new(@secure_session.get(:stripe_session),
+                       @secure_session.get(:request_id),
+                       @secure_session.get(:checkout_data))
+    end
+
+    def delete_donation
+      @secure_session.delete(:stripe_session)
+      @secure_session.delete(:request_id)
+      @secure_session.delete(:checkout_data)
+    end
+
     def delete
       @secure_session.delete(:account)
       @secure_session.delete(:auth_token)

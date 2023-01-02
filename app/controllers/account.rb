@@ -9,6 +9,7 @@ module Coinbase
     plugin :flash
     route('account') do |routing|
       routing.on do
+        routing.public
         # GET /account
         routing.get String do |email|
           if @current_account && @current_account.email == email
@@ -31,7 +32,7 @@ module Coinbase
           raise Form.message_values(form_data) if form_data.failure?
 
           new_account = SecureMessage.decrypt(registration_token)
-          CreateAccount.new(App.config).call(
+          data = {
             first_name: new_account['first_name'],
             last_name: new_account['last_name'],
             email: new_account['email'],
@@ -40,8 +41,13 @@ module Coinbase
             university: form_data['university'],
             field_of_study: form_data['field_of_study'],
             study_level: form_data['study_level'],
-            picture: form_data['picture']
-          )
+            picture: form_data['picture'],
+            contact_number: form_data['contact_number'],
+            address: form_data['address'],
+            bank_name: form_data['bank_name'],
+            bank_account: form_data['bank_account']
+          }
+          CreateAccount.new(App.config).call(data:)
 
           flash[:notice] = 'Account created! Please login'
           routing.redirect '/auth/login'

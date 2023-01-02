@@ -1,0 +1,4 @@
+en:
+  errors:
+    price: You must enter a price.
+    comment: Your comment should be at least 10 characters.

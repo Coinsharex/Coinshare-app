@@ -6,10 +6,18 @@ module Coinbase
   module Form
     # Checks when making a new donation
     class NewDonation < Dry::Validation::Contract
-      # config.messages.load_paths << File.join(__dir__, 'errors_new_donation.yml')
+      config.messages.load_paths << File.join(__dir__, 'errors/new_donation_error.yml')
 
       params do
-        # Check Amount field and make sure that it is filled with a number and the amount entered is between a threshold specidied by the owner of this application.
+        required(:price).filled
+        optional(:comment).value(:string)
+        optional(:anonymous).value(:string)
+      end
+
+      rule(:comment) do
+        if key? && (value.length < 5 && value.length > 300)
+          key.failure('Your comment should be between 10 and 300 characters long')
+        end
       end
     end
   end

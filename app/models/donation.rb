@@ -5,7 +5,7 @@ require_relative 'account'
 module Coinbase
   # Models a donation
   class Donation
-    attr_reader :id, :amount, :identifier, :comment, :anonymous, # basic info
+    attr_reader :id, :amount, :identifier, :comment, :anonymous, :created_at,  # basic info
                 :donor
 
     def initialize(info)
@@ -21,6 +21,7 @@ module Coinbase
       @identifier = attributes['identifier']
       @comment = attributes['comment']
       @anonymous = attributes['anonymous']
+      @created_at = attributes['created_at']
     end
 
     def process_included(included)
