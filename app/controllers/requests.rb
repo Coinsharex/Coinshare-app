@@ -44,7 +44,10 @@ module Coinbase
           routing.is do
             # GET /requests/new
             routing.get do
-              if @current_account.bank_account.empty? || @current_account.bank_name.empty?
+              if @current_account.bank_account.nil? ||
+                 @current_account.bank_account.empty? ||
+                 @current_account.bank_name.nil? ||
+                 @current_account.bank_name.empty?
                 view :complete_account, locals: { current_account: @current_account }
               else
                 flash[:error] = 'Please complete your account before making a new request'
