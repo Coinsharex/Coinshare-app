@@ -42,6 +42,22 @@ module Coinbase
       @account_info ? @account_info['attributes']['picture'] : nil
     end
 
+    def address
+      @account_info ? @account_info['attributes']['address'] : nil
+    end
+
+    def contact_number
+      @account_info ? @account_info['attributes']['contact_number'] : nil
+    end
+
+    def bank_name
+      @account_info ? @account_info['attributes']['bank_name'] : nil
+    end
+
+    def bank_account
+      @account_info ? @account_info['attributes']['bank_account'] : nil
+    end
+
     def logged_out?
       @account_info.nil?
     end

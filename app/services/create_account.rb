@@ -14,18 +14,20 @@ module Coinbase
       @config = config
     end
 
-    def call(first_name:, last_name:, email:, password:, occupation:, university:, field_of_study:, study_level:,
-             picture:)
-
-      message = { first_name:,
-                  last_name:,
-                  email:,
-                  password:,
-                  occupation:,
-                  university:,
-                  field_of_study:,
-                  study_level:,
-                  picture: }
+    def call(data:)
+      message = { first_name: data[:first_name],
+                  last_name: data[:last_name],
+                  email: data[:email],
+                  password: data[:password],
+                  occupation: data[:occupation],
+                  university: data[:university],
+                  field_of_study: data[:field_of_study],
+                  study_level: data[:study_level],
+                  picture: data[:picture],
+                  contact_number: data[:contact_number],
+                  address: data[:address],
+                  bank_name: data[:bank_name],
+                  bank_account: data[:bank_account] }
 
       response = HTTP.post(
         "#{@config.API_URL}/accounts/",

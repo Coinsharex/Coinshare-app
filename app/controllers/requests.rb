@@ -44,62 +44,87 @@ module Coinbase
           routing.is do
             # GET /requests/new
             routing.get do
-              view :new_request
+              if @current_account.bank_account.empty? || @current_account.bank_name.empty?
+                view :complete_account, locals: { current_account: @current_account }
+              else
+                view :new_request
+              end
             end
           end
         end
 
         routing.on(String) do |request_id|
-          routing.is do
-            @request_route = "#{@requests_route}/#{request_id}"
+          # routing.is do
+          @request_route = "#{@requests_route}/#{request_id}"
 
-            # GET /requests/[ID]
-            routing.get do
-              req_info = GetRequest.new(App.config).call(
-                current_account: @current_account, request_id:
-              )
-
-              request = Request.new(req_info)
-
-              view :request, locals: {
-                current_account: @current_account, request:
-              }
-            rescue StandardError => e
-              puts "#{e.inspect}\n#{e.backtrace}"
-              flash[:error] = 'Request not found'
-              routing.redirect @requests_route
-            end
-
-            # Update existing Request
-            # POST /requests/[ID] -> new data
+          routing.on('destroy') do
             routing.post do
-              updated_request_data = Form::EditRequest.new.call(routing.params)
-
-              if updated_request_data.failure?
-                flash[:error] = Form.message_values(updated_request_data)
-                routing.halt
-              end
-
-              UpdateRequest.new(App.config).call(
+              DeleteRequest.new(App.config).call(
                 current_account: @current_account,
-                request_id:,
-                updated_request_data: updated_request_data.to_h
+                request_id:
               )
-
-              flash[:notice] = 'Request successfully updated'
-            rescue UpdateRequest::YearlyFundsAllownaceError
-              flash[:error] = 'You have asked more funds than the allowed threshold for the year'
-              response.status = 403
-            rescue UpdateRequest::ApiServerError => e
-              App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
-              flash[:error] = 'Our servers are not responding -- please try later'
-              response.status = 500
-            rescue StandardError => e
-              puts "FAILURE Creating Request: #{e.inspect}"
-              flash[:error] = 'You are not allowed to update more requests'
-            ensure
-              routing.redirect @requests_route
             end
+            flash[:notice] = 'Request successfully updated'
+            routing.redirect @requests_route.to_s
+          rescue DeleteRequest::NotAllowedError
+            flash[:error] = 'Cannot delete request that already received donations'
+            response.status = 401
+            routing.redirect @request_route
+          rescue DeleteRequest::ApiServerError
+            flash[:error] = 'Our servers are not responding -- please try later'
+            response.status = 500
+            routing.redirect @request_route
+          ensure
+            routing.redirect @requests_route.to_s
+          end
+
+          # GET /requests/[ID]
+          routing.get do
+            req_info = GetRequest.new(App.config).call(
+              current_account: @current_account, request_id:
+            )
+
+            request = Request.new(req_info)
+
+            view :request, locals: {
+              current_account: @current_account, request:
+            }
+          rescue StandardError => e
+            puts "#{e.inspect}\n#{e.backtrace}"
+            flash[:error] = 'Request not found'
+            routing.redirect @requests_route
+          end
+
+          # Update existing Request
+          # POST /requests/[ID] -> new data
+          routing.post do
+            updated_request_data = Form::EditRequest.new.call(routing.params)
+
+            if updated_request_data.failure?
+              flash[:error] = Form.message_values(updated_request_data)
+              routing.halt
+            end
+
+            UpdateRequest.new(App.config).call(
+              current_account: @current_account,
+              request_id:,
+              updated_request_data: updated_request_data.to_h
+            )
+
+            flash[:notice] = 'Request successfully updated'
+          rescue UpdateRequest::YearlyFundsAllownaceError
+            flash[:error] = 'You have asked more funds than the allowed threshold for the year'
+            response.status = 403
+          rescue UpdateRequest::ApiServerError => e
+            App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
+            flash[:error] = 'Our servers are not responding -- please try later'
+            response.status = 500
+          rescue StandardError => e
+            puts "FAILURE Creating Request: #{e.inspect}"
+            flash[:error] = 'You are not allowed to update more requests'
+          ensure
+            # routing.redirect @requests_route
+            routing.redirect "#{@requests_route}/#{request_id}"
           end
         end
         # GET /requests/

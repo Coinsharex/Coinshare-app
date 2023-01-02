@@ -23,8 +23,8 @@ module Coinbase
         photo_encoded = Base64.strict_encode64(photo)
         updated_request_data[:picture] = photo_encoded
       end
-      response = HTTP.auth("Bearer #{current_account}")
-                     .put("#{api_url}/requests/#{request_id}")
+      response = HTTP.auth("Bearer #{current_account.auth_token}")
+                     .put("#{api_url}/requests/#{request_id}", json: updated_request_data)
 
       raise(YearlyFundsAllownaceError) if response.code == 403
       raise(ApiServerError) if response.code != 200

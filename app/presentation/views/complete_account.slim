@@ -1,8 +1,9 @@
 == render :nice
 == assets([:css, :login])
+/ Create a form to verify the entries added, create a service and a route to update the existing record in the DB.
 html lang="en" 
   head
-    title Register
+    title Complete Account
     meta charset="utf-8" /
     meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" /
     link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" /
@@ -22,48 +23,23 @@ html lang="en"
               .login-wrap.p-4.p-md-5
                 .d-flex
                   .w-100
-                    h3.mb-4 Create a new account
-                form.signin-form action="/account/#{registration_token}" method='post' id='register-form' enctype="multipart/form-data"
-                  .form-group.mb-3
-                    label.label for="fname"  First Name
-                    span style="color: red;"
-                      | *
-                    input.form-control name="first_name" value="#{new_account['first_name']}" disabled="" placeholder="First Name" required="" type="text" id="fname" /
-                  .form-group.mb-3
-                    label.label for="lname"  Last Name
-                    span style="color: red;"
-                      | *
-                    input.form-control name="last_name" value="#{new_account['last_name']}" disabled="" placeholder="Last Name" required="" type="text" id="lname" /
-                  .form-group.mb-3
-                    label.label for="email"  Email
-                    span style="color: red;"
-                      | *
-                    input.form-control name="email" value="#{new_account['email']}" disabled="" placeholder="Email" required="" type="email" id="email" /
-                  .form-group.mb-3
-                    label.label for="password"  Password
-                    span style="color: red;"
-                      | *
-                    input.form-control name="password" placeholder="Password" required="" type="password" id="password"/
-                  .form-group.mb-3
-                    label.label for="password_confirm_input"  Re-enter Password:
-                    span style="color: red;"
-                      | *
-                    input.form-control name="password_confirm" placeholder="Password" required="" type="password" id="password_confirm_input"/
+                    h3.mb-4 Account Completion
+                form.signin-form action="/account/" method='post' id='register-form' enctype="multipart/form-data"
                   .form-group.mb-3
                     label.label for="contact_number" Contact Number:
                     span style="color: red;"
                       | *
-                    input.form-control[name="contact_number" placeholder='8860803882192' required="" type="number" id="contact_number" minlength="10" maxlength="15"]
+                    input.form-control[name="contact_number" value="#{current_account.contact_number}" placeholder='8860803882192' required="" type="number" id="contact_number" minlength="10" maxlength="15"]
                   .form-group.mb-3 
                     label.label for="address" Address: 
                     span style="color: red;"
                       | *
-                    input.form-control[name="address" placeholder='300, Zhongda Road, Zhongli District' required="" type="text" id="address" minlength="4" maxlength="120"]
+                    input.form-control[name="address" value="#{current_account.address}" placeholder='300, Zhongda Road, Zhongli District' required="" type="text" id="address" minlength="4" maxlength="120"]
                   .form-group.mb-3
                     label.label for="occupation" Occupation
                     span style="color: red;"
                       | *
-                    select.bg-white.border-md.form-control.custom-select name="occupation" required=""
+                    select.bg-white.border-md.form-control.custom-select name="occupation" required="" value="#{current_account.occupation}" selected="#{current_account.address}"
                        option value=""  Choose your occupation
                        option value="student"  Student
                        option value="developer"  Developer
@@ -73,17 +49,17 @@ html lang="en"
                     label.label for="university" School
                     span style="color: red;"
                       | *
-                    input.form-control name="university" placeholder="School" required="" type="text" id="university" /
+                    input.form-control name="university" value="#{current_account.university}" placeholder="School" required="" type="text" id="university" /
                   .form-group.mb-3
                     label.label  for="fstudy"  Field of Study
                     span style="color: red;"
                       | *
-                    input.form-control placeholder="Field of Study" name="field_of_study" required="" type="text" id="fstudy" /
+                    input.form-control value="#{current_account.field_of_study}" placeholder="Field of Study" name="field_of_study" required="" type="text" id="fstudy" /
                   .form-group.mb-3
                     label.label for="slevel"  Study Level
                     span style="color: red;"
                       | *
-                    select.bg-white.border-md.form-control.custom-select name="study_level" required="" id="slevel"
+                    select.bg-white.border-md.form-control.custom-select name="study_level" required="" id="slevel" value="#{current_account.study_level}" selected="#{current_account.study_level}"
                        option value=""  Choose your study Level
                        option value="no_level"  No School 
                        option value="middle_school" Middle School
@@ -95,12 +71,16 @@ html lang="en"
                        option value="phd"  PHD
                   .form-group.mb-3
                     label.label for="bank_name" Bank Name
-                    input.form-control name="bank_name" placeholder="Chase Center" type="text" id="bank_name" minlength="4" maxlength="40"
+                    span style="color: red;"
+                      | *
+                    input.form-control name="bank_name" value="#{current_account.bank_name}" placeholder="Chase Center" type="text" id="bank_name" minlength="4" maxlength="40" required=""
                   .form-group.mb-3
                     label.label for="bank_account" Bank Account
-                    input.form-control[name="bank_account" placeholder="31301381301301831" type="number" id="bank_account" minlength="8" maxlength="17"]
+                    span style="color: red;"
+                      | *
+                    input.form-control[name="bank_account" value="#{current_account.bank_account}" placeholder="31301381301301831" type="number" id="bank_account" minlength="8" maxlength="17" required=""]
                   .form-group.mb-3
-                    label for='content' Profile Image
+                    label.label for='content' Profile Image
                     input{
                       type="file"
                       id='content' 
@@ -108,10 +88,7 @@ html lang="en"
                       name="picture" 
                     }
                   .form-group
-                    button.form-control.btn.btn-primary.rounded.submit.px-3 type="submit"  Register
-                  p.text-center
-                  | Already a member?
-                  a data-toggle="tab" href="/auth/login"  Login
+                    button.form-control.btn.btn-primary.rounded.submit.px-3 type="submit"  Update
     script src="js/jquery.min.js" 
     script src="js/popper.js" 
     script src="js/bootstrap.min.js" 

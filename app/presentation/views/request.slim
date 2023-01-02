@@ -108,6 +108,10 @@ html[lang="en"]
               - if request.policies.can_edit
                 button.rounded.btn.btn-primary.mb-2.btn-block[type="button" data-toggle="modal" data-target="#editRequest"]
                   |  Edit Request
+              - if request.policies.can_delete 
+                  form role="form"  method='post' action='/requests/#{request.id}/destroy'
+                    button.rounded.btn.btn-danger.mb-2.btn-block
+                      |  Delete Request
               h4.mb-2 
                 | Donors
               - if request.donations.empty?

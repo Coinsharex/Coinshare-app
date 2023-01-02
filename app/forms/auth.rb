@@ -30,7 +30,11 @@ module Coinbase
         required(:university).filled
         required(:field_of_study).filled
         required(:study_level).filled
-        required(:picture).filled
+        required(:contact_number).filled
+        required(:address).filled
+        optional(:bank_name).value(:string)
+        optional(:bank_account).value(:string)
+        optional(:picture).filled
       end
 
       rule(:occupation) do
@@ -49,9 +53,30 @@ module Coinbase
         key.failure('Please choose your highest study level') if value == ''
       end
 
+      rule(:contact_number) do
+        key.failure('Please enter a contact number between 10 and 15 digits') if value.length < 10 || value.length > 15
+      end
+
+      rule(:address) do
+        key.failure('Please enter a valid address') if value.length < 4 || value.length > 120
+      end
+
+      rule(:bank_name) do
+        # binding.pry
+        if key?(:bank_name) && ((value.length.positive? && value.length < 4) || value.length > 40)
+          key.failure('Please enter a valid bank name')
+        end
+      end
+
+      rule(:bank_account) do
+        if key? && ((value.length.positive? && value.length < 7) || value.length > 17)
+          key.failure('Plase enter a valid bank account')
+        end
+      end
+
       rule(:picture) do
-        key.failure('Only supports images') unless value[:type] == 'image/png' || value[:type] == 'image/jpeg'
-        key.failure('Image file size is too big') unless value[:tempfile].size / 1024 < 1_000 # LESS THAN: 1MB
+        key.failure('Only supports images') if key? && (value[:type] != 'image/jpeg')
+        key.failure('Image file size is too big') if key? && value[:tempfile].size / 1024 > 1_000 # GREATER THAN: 1MB
       end
     end
 

@@ -10,6 +10,9 @@
 == assets([:css, :jquery])
 == assets([:css, :default])
 
+/ Ability to update the user account
+/ Render different type of image based on user account type
+
 section[style="background-color: #eee;"]
   .container.py-5
     .row
@@ -21,11 +24,15 @@ section[style="background-color: #eee;"]
             h5.my-3
               | #{current_account.first_name} 
             p.text-muted.mb-1
-              | #{current_account.occupation} 😎
+              - if current_account.occupation.empty?
+                | N/A
+              - else
+                | #{current_account.occupation.capitalize} 😎
             p.text-muted.mb-4
-              / this will be address
-              | Hsinchu City, Taiwan
-              | #{}
+              - if current_account.address.empty?
+                | N/A
+              - else
+                | #{current_account.address}
             .d-flex.justify-content-center.mb-2
               / This will redirect the user to all requests page 
               a.btn.btn-primary[href="/requests/my-requests" style="color: white;"] 
@@ -59,8 +66,10 @@ section[style="background-color: #eee;"]
                   | Contact Number
               .col-sm-9
                 p.text-muted.mb-0
-                  | +886 098 4253530
-                  | #{}
+                  - if current_account.contact_number.empty?
+                    | N/A
+                  - else
+                    | #{current_account.contact_number}
             hr
             .row
               .col-sm-3
@@ -68,7 +77,10 @@ section[style="background-color: #eee;"]
                   | University
               .col-sm-9
                 p.text-muted.mb-0
-                  | #{current_account.university}
+                  - if current_account.university.empty?
+                    | N/A
+                  - else
+                    | #{current_account.university}
             hr
             .row
               .col-sm-3
@@ -76,7 +88,10 @@ section[style="background-color: #eee;"]
                   | Study Level
               .col-sm-9
                 p.text-muted.mb-0
-                  | #{current_account.study_level}
+                  - if current_account.study_level.empty?
+                    | N/A
+                  - else
+                    | #{current_account.study_level.capitalize}
             hr
             .row
               .col-sm-3
@@ -84,7 +99,10 @@ section[style="background-color: #eee;"]
                   | Address
               .col-sm-9
                 p.text-muted.mb-0
-                  | Bay Area, San Francisco, CA
+                  - if current_account.address.empty?
+                    | N/A
+                  - else
+                    | #{current_account.address}
         .row
           .col-md-12
             .card.mb-4.mb-md-0
@@ -97,7 +115,10 @@ section[style="background-color: #eee;"]
                       | Bank Name
                   .col-sm-9
                     p.text-muted.mb-0
-                      | #{current_account.first_name} #{current_account.last_name}
+                      - if current_account.bank_name.empty?
+                        | N/A
+                      - else 
+                        | #{current_account.bank_name}
                 hr
                 .row
                   .col-sm-3
@@ -105,14 +126,17 @@ section[style="background-color: #eee;"]
                       | Account Number
                   .col-sm-9
                     p.text-muted.mb-0
-                      | #{current_account.first_name} #{current_account.last_name}
+                      - if current_account.bank_account.empty?
+                        | N/A
+                      - else
+                        | #{current_account.bank_account}
                 hr
-                .row
-                  .col-sm-3
-                    p.mb-0
-                      | Available Amount
-                  .col-sm-9
-                    button.btn.btn-outline-primary.mb-0
-                      | #{current_account.first_name} #{current_account.last_name}
-                hr
+                / .row
+                /   .col-sm-3
+                /     p.mb-0
+                /       | Available Amount
+                /   .col-sm-9
+                /     button.btn.btn-outline-primary.mb-0
+                /       | #{current_account.first_name} #{current_account.last_name}
+                / hr
                 
