@@ -47,6 +47,7 @@ module Coinbase
               if @current_account.bank_account.empty? || @current_account.bank_name.empty?
                 view :complete_account, locals: { current_account: @current_account }
               else
+                flash[:error] = 'Please complete your account before making a new request'
                 view :new_request
               end
             end

@@ -12,7 +12,6 @@
 
 / Ability to update the user account
 / Render different type of image based on user account type
-
 section[style="background-color: #eee;"]
   .container.py-5
     .row
@@ -24,12 +23,12 @@ section[style="background-color: #eee;"]
             h5.my-3
               | #{current_account.first_name} 
             p.text-muted.mb-1
-              - if current_account.occupation.empty?
+              - if current_account.occupation.nil? || current_account.occupation.empty?
                 | N/A
               - else
                 | #{current_account.occupation.capitalize} 😎
             p.text-muted.mb-4
-              - if current_account.address.empty?
+              - if current_account.address.nil? || current_account.address.empty?
                 | N/A
               - else
                 | #{current_account.address}
@@ -66,7 +65,7 @@ section[style="background-color: #eee;"]
                   | Contact Number
               .col-sm-9
                 p.text-muted.mb-0
-                  - if current_account.contact_number.empty?
+                  - if current_account.contact_number.nil? || current_account.contact_number.empty?
                     | N/A
                   - else
                     | #{current_account.contact_number}
@@ -77,7 +76,7 @@ section[style="background-color: #eee;"]
                   | University
               .col-sm-9
                 p.text-muted.mb-0
-                  - if current_account.university.empty?
+                  - if current_account.university.nil? || current_account.university.empty?
                     | N/A
                   - else
                     | #{current_account.university}
@@ -88,7 +87,7 @@ section[style="background-color: #eee;"]
                   | Study Level
               .col-sm-9
                 p.text-muted.mb-0
-                  - if current_account.study_level.empty?
+                  - if current_account.study_level.nil? || current_account.study_level.empty?
                     | N/A
                   - else
                     | #{current_account.study_level.capitalize}
@@ -99,7 +98,7 @@ section[style="background-color: #eee;"]
                   | Address
               .col-sm-9
                 p.text-muted.mb-0
-                  - if current_account.address.empty?
+                  - if current_account.address.nil? || current_account.address.empty?
                     | N/A
                   - else
                     | #{current_account.address}
@@ -115,7 +114,7 @@ section[style="background-color: #eee;"]
                       | Bank Name
                   .col-sm-9
                     p.text-muted.mb-0
-                      - if current_account.bank_name.empty?
+                      - if current_account.bank_name.nil? || current_account.bank_name.empty?
                         | N/A
                       - else 
                         | #{current_account.bank_name}
@@ -126,7 +125,7 @@ section[style="background-color: #eee;"]
                       | Account Number
                   .col-sm-9
                     p.text-muted.mb-0
-                      - if current_account.bank_account.empty?
+                      - if current_account.bank_account.nil? || current_account.bank_account.empty?
                         | N/A
                       - else
                         | #{current_account.bank_account}
