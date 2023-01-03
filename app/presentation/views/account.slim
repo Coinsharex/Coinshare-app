@@ -18,8 +18,11 @@ section[style="background-color: #eee;"]
       .col-lg-4
         .card.mb-4
           .card-body.text-center
-            - image = current_account.picture.nil? ? 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' : current_account.picture
-            img.rounded-circle.img-fluid[src="#{image}" alt="avatar" style="width: 150px;"]
+            - image = current_account.picture.nil? || current_account.picture.empty? ? 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' : current_account.picture
+            - if image.start_with?('https://')
+              img.rounded-circle.img-fluid[src="#{image}" alt="avatar" style="width: 150px;"]
+            - else 
+              img.rounded-circle.img-fluid[src="data:image/jpeg;base64,#{image}" alt="avatar" style="width: 150px;"]
             h5.my-3
               | #{current_account.first_name} 
             p.text-muted.mb-1
@@ -102,6 +105,11 @@ section[style="background-color: #eee;"]
                     | N/A
                   - else
                     | #{current_account.address}
+            hr
+            .row
+              .col-sm-3
+                a.btn.btn-primary[href="/account_info/update" style="color: white;"] 
+                  | Update Account
         .row
           .col-md-12
             .card.mb-4.mb-md-0
