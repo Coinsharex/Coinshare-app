@@ -15,6 +15,9 @@ module Coinbase
     end
 
     def call(data:)
+      photo = Object::File.read(request_data[:picture][:tempfile])
+      photo_encoded = Base64.strict_encode64(photo)
+
       message = { first_name: data[:first_name],
                   last_name: data[:last_name],
                   email: data[:email],
@@ -23,7 +26,7 @@ module Coinbase
                   university: data[:university],
                   field_of_study: data[:field_of_study],
                   study_level: data[:study_level],
-                  picture: data[:picture],
+                  picture: photo_encoded,
                   contact_number: data[:contact_number],
                   address: data[:address],
                   bank_name: data[:bank_name],

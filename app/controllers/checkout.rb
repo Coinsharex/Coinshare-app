@@ -48,6 +48,11 @@ module Coinbase
           data: donation_data
         )
 
+        # TransferFunds.new(App.config).call(
+        #   current_account: @current_account,
+        #   data: donation_data
+        # )
+
         CurrentSession.new(session).delete_donation
         view :success
       end

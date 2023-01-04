@@ -64,13 +64,13 @@ module Coinbase
       rule(:bank_name) do
         # binding.pry
         if key?(:bank_name) && ((value.length.positive? && value.length < 4) || value.length > 40)
-          key.failure('Please enter a valid bank name')
+          key.failure('Please enter a valid bank name between 4 and 40 characters')
         end
       end
 
       rule(:bank_account) do
         if key? && ((value.length.positive? && value.length < 7) || value.length > 17)
-          key.failure('Plase enter a valid bank account')
+          key.failure('Plase enter a valid bank account between 7 and 17 characters')
         end
       end
 
