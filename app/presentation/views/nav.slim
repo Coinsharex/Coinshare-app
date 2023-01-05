@@ -3,9 +3,10 @@
 header.site-navbar.site-navbar-target.bg-secondary.shadow role="banner" 
   .container
     .row.align-items-center.position-relative
-      .site-logo
-        a.text-white href="/"  Fundus
-      nav.site-navigation.text-left.ml-auto role="navigation" 
+      .site-logo style=("display: inline; width: 50%;")
+        a.navbar-brand href="/" 
+          img.img-fluid alt="Image" src="images/icon.png" style=("width: 20%;")
+      nav.site-navigation.text-left.ml-auto role="navigation"
         ul.site-menu.main-menu.js-clone-nav.ml-auto.d-none.d-lg-block
           - if @current_account.logged_in?
             li
@@ -32,3 +33,25 @@ header.site-navbar.site-navbar-target.bg-secondary.shadow role="banner"
       .ml-auto.toggle-button.d-inline-block.d-lg-none
         a.site-menu-toggle.py-5.js-menu-toggle.text-white href="#" 
           span.icon-menu.h3.text-white
+
+
+
+/ nav.navbar.navbar-expand-lg.navbar-light.bg-secondary
+/   .container 
+/     a.navbar-brand[href="/"]
+/       img.img-fluid alt="Image" src="images/icon.png" style=("width: 18%;")
+/     button.navbar-toggler[type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation"]
+/       span.navbar-toggler-icon
+/     #navbarText.collapse.navbar-collapse
+/       ul.navbar-nav.mr-auto
+/         li.nav-item.active
+/           a.nav-link[href="#"]
+/             | Home 
+/             span.sr-only
+/               | (current)
+/         li.nav-item
+/           a.nav-link[href="#"]
+/             | Features
+/         li.nav-item
+/           a.nav-link[href="#"]
+/             | Pricing
